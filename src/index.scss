@@ -1,0 +1,35 @@
+@use "./styles/variables.scss" as v;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: v.$font-main;
+  background-color: v.$dark-bg;
+  color: v.$white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+// Fixed navbar offset for mobile/tablet
+@media (max-width: v.$tablet) {
+  body {
+    padding-top: 86px; // Navbar height
+  }
+}

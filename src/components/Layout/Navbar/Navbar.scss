@@ -1,0 +1,136 @@
+@use "../../../styles/variables" as v;
+
+.navbar {
+  height: v.$navbar-height-desktop;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(15, 8, 5, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 15px rgba(255, 107, 53, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+
+  // Scrolled state - pops up with enhanced shadow
+  &--scrolled {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+    padding: 12px 32px;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-svg {
+  width: 70px;
+  height: 70px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: v.$white;
+  margin: 0;
+  line-height: 1;
+}
+
+.logo-highlight {
+  color: v.$orange;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-family: v.$font-main;
+  font-weight: bold;
+  font-size: 1rem;
+  color: v.$white;
+  background: transparent;
+  border: v.$dotted-border;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 107, 53, 0.1);
+    color: v.$orange;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: rgba(255, 107, 53, 0.3);
+  }
+
+  &--login {
+    border-color: v.$orange;
+  }
+
+  &--cart {
+    border-color: v.$orange;
+  }
+}
+
+@media (max-width: v.$tablet) {
+  .navbar {
+    height: v.$navbar-height-mobile;
+    padding: 16px 20px;
+
+    &--scrolled {
+      padding: 12px 20px;
+    }
+  }
+
+  .nav-actions {
+    gap: 0;
+  }
+
+  .nav-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    gap: 6px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &--cart {
+      display: none;
+    }
+
+    &--login {
+      padding: 8px 20px;
+    }
+  }
+}

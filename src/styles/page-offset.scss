@@ -1,0 +1,28 @@
+@use "./variables.scss" as v;
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - v.$navbar-height-desktop);
+  padding-top: 0;
+
+  @media (max-width: v.$tablet) {
+    min-height: calc(100vh - v.$navbar-height-mobile);
+  }
+}
+
+.navbar-spacer {
+  height: v.$navbar-height-desktop;
+  flex-shrink: 0;
+
+  @media (max-width: v.$tablet) {
+    height: 0;
+  }
+}
