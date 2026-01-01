@@ -1,0 +1,128 @@
+@use "../../../styles/variables" as v;
+
+.footer {
+  background: v.$dark-surface;
+  color: v.$gray-light;
+  padding: v.$spacing-md v.$spacing-sm;
+  border-top: 1px solid v.$orange;
+  margin-top: auto;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: v.$spacing-lg;
+  }
+
+  &__brand {
+    max-width: 350px;
+  }
+
+  &__brand-box {
+    padding: v.$spacing-md;
+    border: v.$dotted-border;
+    background: rgba(255, 107, 53, 0.05);
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+  }
+
+  &__logo {
+    color: v.$orange;
+    font-size: 1.8rem;
+    font-weight: bolder;
+    margin-bottom: v.$spacing-sm;
+    font-family: v.$font-main;
+  }
+
+  &__description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: v.$gray-light;
+    font-family: v.$font-main;
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: v.$spacing-md;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    color: v.$orange;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: v.$spacing-sm;
+    font-family: v.$font-main;
+  }
+
+  &__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-xs;
+
+    li a {
+      color: v.$gray;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+      font-family: v.$font-main;
+
+      &:hover {
+        color: v.$orange;
+      }
+    }
+  }
+
+  &__bottom {
+    max-width: 1200px;
+    margin: v.$spacing-lg auto 0;
+    text-align: center;
+  }
+
+  &__divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      v.$orange 50%,
+      transparent 100%
+    );
+    margin-bottom: v.$spacing-md;
+  }
+
+  &__bottom p {
+    color: v.$gray;
+    font-size: 0.875rem;
+    font-family: v.$font-main;
+  }
+}
+
+// TABLET & MOBILE - 768px breakpoint
+@media (max-width: v.$tablet) {
+  .footer {
+    padding: v.$spacing-md v.$spacing-sm;
+
+    &__container {
+      grid-template-columns: 1fr;
+      gap: v.$spacing-md;
+    }
+
+    &__links {
+      grid-template-columns: 1fr;
+      gap: v.$spacing-md;
+    }
+
+    &__brand {
+      max-width: 100%;
+    }
+
+    &__brand-box {
+      padding: v.$spacing-sm;
+    }
+  }
+}
