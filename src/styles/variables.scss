@@ -1,0 +1,31 @@
+// Colors - Vintage Dark Orange Theme
+$orange: #ff6b35;
+$orange-dark: #e55a28;
+$orange-light: #ff8c5a;
+
+$black: #000000;
+$dark-bg: #0a0a0a;
+$dark-surface: #1a1a1a;
+
+$white: #ffffff;
+$gray-light: #e0e0e0;
+$gray: #999999;
+
+// Typography - Use system font as fallback for faster rendering
+$font-main: "Rock Salt", cursive;
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 32px;
+$spacing-lg: 64px;
+
+// Breakpoints
+$tablet: 768px;
+
+// Vintage dotted border
+$dotted-border: 2px dotted $orange;
+
+$navbar-height-desktop: 96px;
+$navbar-height-mobile: 72px;
+
+$navbar-height: $navbar-height-desktop;
