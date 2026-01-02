@@ -1,0 +1,38 @@
+@use "./variables.scss" as v;
+@use "./mixins.scss" as m;
+
+.page-wrapper {
+  min-height: 100vh;
+  @include m.flex-column;
+}
+
+.main-content {
+  flex: 1;
+  @include m.flex-column;
+  min-height: calc(100vh - v.$navbar-height-desktop);
+  padding-top: 0;
+  width: 100%;
+  overflow-x: hidden;
+
+  @include m.tablet {
+    min-height: calc(100vh - v.$navbar-height-mobile);
+  }
+
+  @include m.mobile {
+    min-height: calc(100vh - v.$navbar-height-mobile);
+    overflow-x: hidden;
+  }
+}
+
+.navbar-spacer {
+  height: v.$navbar-height-desktop;
+  flex-shrink: 0;
+
+  @include m.tablet {
+    height: v.$navbar-height-mobile;
+  }
+
+  @include m.mobile {
+    height: v.$navbar-height-mobile;
+  }
+}

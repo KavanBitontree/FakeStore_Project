@@ -1,0 +1,95 @@
+// Colors - Vintage Dark Orange Theme
+$orange: #ff6b35;
+$orange-dark: #e55a28;
+$orange-light: #ff8c5a;
+
+$black: #000000;
+$dark-bg: #0a0a0a;
+$dark-surface: #1a1a1a;
+
+$white: #ffffff;
+$gray-light: #e0e0e0;
+$gray: #999999;
+
+// Typography - Use system font as fallback for faster rendering
+$font-main: "Rock Salt", cursive;
+
+// Font Sizes
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-md: 1.125rem;   // 18px
+$font-size-lg: 1.25rem;    // 20px
+$font-size-xl: 1.5rem;     // 24px
+$font-size-2xl: 1.875rem;  // 30px
+$font-size-3xl: 2.25rem;  // 36px
+$font-size-4xl: 3rem;     // 48px
+
+// Heading Font Sizes
+$h1-size: 2.5rem;          // 40px
+$h2-size: 2rem;           // 32px
+$h3-size: 1.75rem;        // 28px
+$h4-size: 1.5rem;         // 24px
+$h5-size: 1.25rem;        // 20px
+$h6-size: 1.125rem;       // 18px
+$p-size: 1rem;            // 16px
+
+// Font Weights
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// Line Heights
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.6;
+$line-height-loose: 1.8;
+
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 32px;
+$spacing-lg: 64px;
+
+// Breakpoints
+$tablet: 768px;
+$mobile: 480px;
+
+// Transitions
+$transition-fast: 0.2s;
+$transition-base: 0.3s;
+$transition-slow: 0.5s;
+$transition-ease: ease;
+$transition-ease-in-out: ease-in-out;
+
+// Border Radius
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-full: 9999px;
+
+// Vintage dotted border
+$dotted-border: 2px dotted $orange;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(255, 107, 53, 0.3);
+$shadow-md: 0 4px 20px rgba(255, 107, 53, 0.3);
+$shadow-lg: 0 8px 24px rgba(255, 107, 53, 0.4);
+$shadow-glow: 0 0 15px rgba(255, 107, 53, 0.5);
+
+// Z-index
+$z-index-base: 1;
+$z-index-dropdown: 100;
+$z-index-sticky: 200;
+$z-index-fixed: 300;
+$z-index-modal: 400;
+$z-index-popover: 500;
+$z-index-tooltip: 600;
+$z-index-navbar: 1000;
+
+// Navbar
+$navbar-height-desktop: 96px;
+$navbar-height-mobile: 72px;
+$navbar-height: $navbar-height-desktop;

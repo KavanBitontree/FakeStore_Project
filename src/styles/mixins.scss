@@ -1,0 +1,105 @@
+@use "./variables.scss" as v;
+
+// Common Mixins
+
+// Media Query Mixins
+@mixin tablet {
+  @media (max-width: v.$tablet) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: v.$mobile) {
+    @content;
+  }
+}
+
+// Transition Mixin
+@mixin transition($properties: all, $duration: v.$transition-base, $easing: v.$transition-ease) {
+  transition: $properties $duration $easing;
+}
+
+// Flexbox Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Button Base Styles
+@mixin button-base {
+  font-family: v.$font-main;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  @include transition();
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-hover($bg-color, $text-color) {
+  &:hover:not(:disabled) {
+    background-color: $bg-color;
+    color: $text-color;
+  }
+}
+
+@mixin button-active {
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Box Shadow Mixins
+@mixin shadow-sm {
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+}
+
+@mixin shadow-glow {
+  box-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+}
+
+// Border Mixins
+@mixin border-dotted {
+  border: 2px dotted v.$orange;
+}
+
+@mixin border-solid {
+  border: 2px solid v.$orange;
+}
+
+// Text Mixins
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-truncate($lines: 1) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
