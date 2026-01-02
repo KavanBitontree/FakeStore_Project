@@ -1,4 +1,5 @@
 @use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
 
 .footer {
   background: v.$dark-surface;
@@ -23,20 +24,20 @@
     padding: v.$spacing-md;
     border: v.$dotted-border;
     background: rgba(255, 107, 53, 0.05);
-    box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+    @include m.shadow-glow;
   }
 
   &__logo {
     color: v.$orange;
-    font-size: 1.8rem;
-    font-weight: bolder;
+    font-size: v.$font-size-xl + 0.3rem;
+    font-weight: v.$font-weight-extrabold;
     margin-bottom: v.$spacing-sm;
     font-family: v.$font-main;
   }
 
   &__description {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: v.$font-size-sm + 0.075rem;
+    line-height: v.$line-height-relaxed;
     color: v.$gray-light;
     font-family: v.$font-main;
   }
@@ -48,28 +49,26 @@
   }
 
   &__column {
-    display: flex;
-    flex-direction: column;
+    @include m.flex-column;
   }
 
   &__title {
     color: v.$orange;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-bold;
     margin-bottom: v.$spacing-sm;
     font-family: v.$font-main;
   }
 
   &__list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
+    @include m.flex-column;
     gap: v.$spacing-xs;
 
     li a {
       color: v.$gray;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
+      font-size: v.$font-size-sm + 0.025rem;
+      @include m.transition(color, v.$transition-fast);
       font-family: v.$font-main;
 
       &:hover {
@@ -97,13 +96,13 @@
 
   &__bottom p {
     color: v.$gray;
-    font-size: 0.875rem;
+    font-size: v.$font-size-sm - 0.125rem;
     font-family: v.$font-main;
   }
 }
 
 // TABLET & MOBILE - 768px breakpoint
-@media (max-width: v.$tablet) {
+@include m.tablet {
   .footer {
     padding: v.$spacing-md v.$spacing-sm;
 
