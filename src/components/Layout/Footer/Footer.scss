@@ -1,0 +1,127 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.footer {
+  background: v.$dark-surface;
+  color: v.$gray-light;
+  padding: v.$spacing-md v.$spacing-sm;
+  border-top: 1px solid v.$orange;
+  margin-top: auto;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: v.$spacing-lg;
+  }
+
+  &__brand {
+    max-width: 350px;
+  }
+
+  &__brand-box {
+    padding: v.$spacing-md;
+    border: v.$dotted-border;
+    background: rgba(255, 107, 53, 0.05);
+    @include m.shadow-glow;
+  }
+
+  &__logo {
+    color: v.$orange;
+    font-size: v.$font-size-xl + 0.3rem;
+    font-weight: v.$font-weight-extrabold;
+    margin-bottom: v.$spacing-sm;
+    font-family: v.$font-main;
+  }
+
+  &__description {
+    font-size: v.$font-size-sm + 0.075rem;
+    line-height: v.$line-height-relaxed;
+    color: v.$gray-light;
+    font-family: v.$font-main;
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: v.$spacing-md;
+  }
+
+  &__column {
+    @include m.flex-column;
+  }
+
+  &__title {
+    color: v.$orange;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-bold;
+    margin-bottom: v.$spacing-sm;
+    font-family: v.$font-main;
+  }
+
+  &__list {
+    list-style: none;
+    @include m.flex-column;
+    gap: v.$spacing-xs;
+
+    li a {
+      color: v.$gray;
+      font-size: v.$font-size-sm + 0.025rem;
+      @include m.transition(color, v.$transition-fast);
+      font-family: v.$font-main;
+
+      &:hover {
+        color: v.$orange;
+      }
+    }
+  }
+
+  &__bottom {
+    max-width: 1200px;
+    margin: v.$spacing-lg auto 0;
+    text-align: center;
+  }
+
+  &__divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      v.$orange 50%,
+      transparent 100%
+    );
+    margin-bottom: v.$spacing-md;
+  }
+
+  &__bottom p {
+    color: v.$gray;
+    font-size: v.$font-size-sm - 0.125rem;
+    font-family: v.$font-main;
+  }
+}
+
+// TABLET & MOBILE - 768px breakpoint
+@include m.tablet {
+  .footer {
+    padding: v.$spacing-md v.$spacing-sm;
+
+    &__container {
+      grid-template-columns: 1fr;
+      gap: v.$spacing-md;
+    }
+
+    &__links {
+      grid-template-columns: 1fr;
+      gap: v.$spacing-md;
+    }
+
+    &__brand {
+      max-width: 100%;
+    }
+
+    &__brand-box {
+      padding: v.$spacing-sm;
+    }
+  }
+}
