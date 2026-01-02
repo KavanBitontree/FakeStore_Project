@@ -1,0 +1,31 @@
+@use "../styles/variables.scss" as v;
+@use "../styles/mixins.scss" as m;
+
+.product-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include m.tablet {
+    padding: 20px v.$spacing-sm;
+    max-width: 100%;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-sm v.$spacing-xs;
+    max-width: 100%;
+  }
+
+  // Ensure content is visible
+  p {
+    color: v.$white;
+    font-size: v.$font-size-base;
+
+    @include m.mobile {
+      font-size: v.$font-size-sm;
+    }
+  }
+}
+
