@@ -1,11 +1,37 @@
+import { useEffect, useRef, useState } from "react";
 import "./ProductCard.scss";
 
 const ProductCard = ({ product, onAddToCart }) => {
+  const imgRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // stop observing after load trigger
+        }
+      },
+      {
+        rootMargin: "100px", // preload slightly before visible
+        threshold: 0.1,
+      }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="product-card">
       <div className="product-image-container">
         <img
-          src={product.image}
+          ref={imgRef}
+          src={isVisible ? product.image : ""}
           alt={product.title}
           className="product-image"
         />
