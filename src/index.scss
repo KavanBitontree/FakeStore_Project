@@ -16,13 +16,80 @@ body {
   font-family: v.$font-main;
   background-color: v.$dark-bg;
   color: v.$white;
+  font-size: v.$p-size;
+  line-height: v.$line-height-normal;
 }
 
+// Typography - Headings
+h1 {
+  font-size: v.$h1-size;
+  font-weight: v.$font-weight-bold;
+  line-height: v.$line-height-tight;
+  color: v.$white;
+  margin: 0 0 v.$spacing-md 0;
+}
+
+h2 {
+  font-size: v.$h2-size;
+  font-weight: v.$font-weight-bold;
+  line-height: v.$line-height-tight;
+  color: v.$white;
+  margin: 0 0 v.$spacing-sm 0;
+}
+
+h3 {
+  font-size: v.$h3-size;
+  font-weight: v.$font-weight-semibold;
+  line-height: v.$line-height-tight;
+  color: v.$white;
+  margin: 0 0 v.$spacing-sm 0;
+}
+
+h4 {
+  font-size: v.$h4-size;
+  font-weight: v.$font-weight-semibold;
+  line-height: v.$line-height-normal;
+  color: v.$white;
+  margin: 0 0 v.$spacing-xs 0;
+}
+
+h5 {
+  font-size: v.$h5-size;
+  font-weight: v.$font-weight-medium;
+  line-height: v.$line-height-normal;
+  color: v.$white;
+  margin: 0 0 v.$spacing-xs 0;
+}
+
+h6 {
+  font-size: v.$h6-size;
+  font-weight: v.$font-weight-medium;
+  line-height: v.$line-height-normal;
+  color: v.$white;
+  margin: 0 0 v.$spacing-xs 0;
+}
+
+// Typography - Paragraphs
+p {
+  font-size: v.$p-size;
+  font-weight: v.$font-weight-normal;
+  line-height: v.$line-height-normal;
+  color: v.$white;
+  margin: 0 0 v.$spacing-sm 0;
+}
+
+// Links
 a {
   text-decoration: none;
   color: inherit;
+  transition: color v.$transition-fast v.$transition-ease;
+
+  &:hover {
+    color: v.$orange;
+  }
 }
 
+// HTML
 html {
   scroll-behavior: smooth;
 }
@@ -30,6 +97,34 @@ html {
 // Fixed navbar offset for mobile/tablet
 @media (max-width: v.$tablet) {
   body {
-    padding-top: 86px; // Navbar height
+    padding-top: 0px; // Navbar height
+  }
+
+  h1 {
+    font-size: v.$h2-size;
+  }
+
+  h2 {
+    font-size: v.$h3-size;
+  }
+
+  h3 {
+    font-size: v.$h4-size;
+  }
+
+  h4 {
+    font-size: v.$h5-size;
+  }
+
+  h5 {
+    font-size: v.$h6-size;
+  }
+
+  h6 {
+    font-size: v.$font-size-base;
+  }
+
+  p {
+    font-size: v.$font-size-sm;
   }
 }
