@@ -1,4 +1,5 @@
 @use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
 
 .navbar {
   height: v.$navbar-height-desktop;
@@ -7,38 +8,44 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: v.$z-index-navbar;
   background: rgba(15, 8, 5, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 15px rgba(255, 107, 53, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 32px;
+  @include m.flex-between;
+  padding: v.$spacing-sm v.$spacing-md;
   transform: translateY(0);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+  @include m.transition((transform, box-shadow, padding));
 
   // Scrolled state - pops up with enhanced shadow
   &--scrolled {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
-    padding: 12px 32px;
+    @include m.shadow-lg;
+    padding: 12px v.$spacing-md;
   }
 }
 
 .logo {
-  display: flex;
-  align-items: center;
+  @include m.flex-center;
 }
 
 .logo-content {
-  display: flex;
-  align-items: center;
+  @include m.flex-center;
   gap: 12px;
 }
 
 .logo-svg {
   width: 70px;
   height: 70px;
+
+  @include m.tablet {
+    width: 50px;
+    height: 50px;
+  }
+
+  @include m.mobile {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .logo-text {
@@ -48,11 +55,19 @@
 }
 
 .logo-title {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: v.$font-size-2xl;
+  font-weight: v.$font-weight-bold;
   color: v.$white;
   margin: 0;
-  line-height: 1;
+  line-height: v.$line-height-tight;
+
+  @include m.tablet {
+    font-size: v.$font-size-xl;
+  }
+
+  @include m.mobile {
+    font-size: v.$font-size-lg;
+  }
 }
 
 .logo-highlight {
@@ -62,28 +77,28 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: v.$spacing-sm;
 }
 
 .nav-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: v.$spacing-xs;
   padding: 10px 20px;
   font-family: v.$font-main;
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: v.$font-weight-bold;
+  font-size: v.$font-size-base;
   color: v.$white;
   background: transparent;
   border: v.$dotted-border;
   cursor: pointer;
-  transition: all 0.25s ease;
+  @include m.transition(all, v.$transition-fast);
   outline: none;
 
   &:hover:not(:disabled) {
     background: rgba(255, 107, 53, 0.1);
     color: v.$orange;
-    box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+    @include m.shadow-sm;
   }
 
   &:disabled {
@@ -98,31 +113,39 @@
 
   &--cart {
     border-color: v.$orange;
+    position: relative;
   }
 }
 
-@media (max-width: v.$tablet) {
+.cart-badge {
+  font-size: v.$font-size-sm - 0.05rem;
+  color: v.$orange;
+  font-weight: v.$font-weight-bold;
+  margin-left: 4px;
+}
+
+@include m.tablet {
   .navbar {
     height: v.$navbar-height-mobile;
-    padding: 16px 20px;
+    padding: v.$spacing-sm 16px;
 
     &--scrolled {
-      padding: 12px 20px;
+      padding: 10px 16px;
     }
   }
 
   .nav-actions {
-    gap: 0;
+    gap: 8px;
   }
 
   .nav-button {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    gap: 6px;
+    padding: 6px 12px;
+    font-size: v.$font-size-sm;
+    gap: 4px;
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
 
     &--cart {
@@ -130,7 +153,33 @@
     }
 
     &--login {
-      padding: 8px 20px;
+      padding: 6px 14px;
+      font-size: v.$font-size-xs;
+    }
+  }
+}
+
+@include m.mobile {
+  .navbar {
+    padding: 8px 12px;
+
+    &--scrolled {
+      padding: 8px 12px;
+    }
+  }
+
+  .nav-button {
+    padding: 5px 10px;
+    font-size: v.$font-size-xs;
+    gap: 3px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &--login {
+      padding: 5px 12px;
     }
   }
 }

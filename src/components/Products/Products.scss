@@ -1,23 +1,29 @@
 @use "../../styles/variables.scss" as v;
+@use "../../styles/mixins.scss" as m;
 
 .border-div {
   padding: 10px;
   width: 100%;
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  @include m.flex-column;
   min-height: 0;
   box-shadow: 0 2px 15px rgba(255, 107, 53, 0.2),
     0 0 30px rgba(255, 107, 53, 0.15);
+  box-sizing: border-box;
+  overflow-x: hidden;
 
-  @media (max-width: v.$tablet) {
+  @include m.tablet {
     padding: 0;
+  }
+
+  @include m.mobile {
+    padding: 0;
+    overflow-x: hidden;
   }
 }
 
 .border {
-  display: flex;
-  flex-direction: column;
+  @include m.flex-column;
   width: 100%;
   height: 100%;
   flex: 1;
@@ -25,6 +31,8 @@
   padding: v.$spacing-md;
   box-sizing: border-box;
   min-height: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 
   border: none;
   background-color: transparent;
@@ -41,10 +49,16 @@
   background-origin: border-box;
   background-clip: border-box, border-box, border-box, border-box;
 
-  animation: linearGradientMove 0.5s linear infinite;
+  animation: linearGradientMove v.$transition-slow linear infinite;
 
-  @media (max-width: v.$tablet) {
+  @include m.tablet {
     padding: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-xs;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 }
 
@@ -53,10 +67,24 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: v.$spacing-md;
   width: 100%;
+  box-sizing: border-box;
 
-  @media (max-width: v.$tablet) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: v.$spacing-sm;
+  }
+
+  @include m.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+    gap: v.$spacing-xs;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
   }
 }
 
