@@ -1,65 +1,64 @@
-import { useState, useEffect } from "react";
-import "./Products.scss";
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { fetchProducts } from "../../config/api";
+import "./Products.scss";
 
-const Products = () => {
+const Products = ({ searchQuery = "" }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🔹 Fetch products once
   useEffect(() => {
-    const loadProducts = async () => {
+    const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await fetchProducts();
+
+        // 🔁 Replace with your real API
+        const response = await fetch("/api/products");
+        if (!response.ok) throw new Error("Failed to fetch products");
+
+        const data = await response.json();
         setProducts(data);
-        setError(null);
       } catch (err) {
-        setError("Failed to load products. Please try again later.");
-        console.error(err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    loadProducts();
+    fetchProducts();
   }, []);
 
-  const handleAddToCart = (product) => {
-    console.log("Adding to cart:", product);
-    // Add your cart logic here
-  };
+  // 🔹 Derived data (NO state, NO useEffect)
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // 🔹 UI states
+  if (loading) {
+    return <div className="products-status">Loading products...</div>;
+  }
+
+  if (error) {
+    return <div className="products-status error">{error}</div>;
+  }
+
+  if (!filteredProducts.length) {
+    return (
+      <div className="products-status">
+        No products found{searchQuery && ` for "${searchQuery}"`}
+      </div>
+    );
+  }
 
   return (
-    <div className="border-div">
-      <div className="border">
-        {loading && (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p className="loading-text">Loading products...</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="error-container">
-            <p className="error-text">{error}</p>
-          </div>
-        )}
-
-        {!loading && !error && (
-          <div className="products-grid">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        )}
+    <section className="products">
+      <div className="products-grid">
+        {filteredProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

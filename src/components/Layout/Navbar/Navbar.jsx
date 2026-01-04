@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { ShoppingCart } from "lucide-react";
 import Logo from "./Logo";
+import Search from "../../Home/Search";
 import "./Navbar.scss";
 
-export default function Navbar() {
+export default function Navbar({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
 
   const handleScroll = useCallback(() => {
@@ -19,6 +20,11 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="logo">
         <Logo />
+      </div>
+
+      {/* 🔍 Search in center */}
+      <div className="navbar-search">
+        <Search onSearch={onSearch} />
       </div>
 
       <div className="nav-actions">

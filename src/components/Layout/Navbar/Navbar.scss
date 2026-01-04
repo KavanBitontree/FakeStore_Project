@@ -101,6 +101,13 @@
   }
 }
 
+.navbar-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 32px;
+}
+
 @media (max-width: v.$tablet) {
   .navbar {
     height: v.$navbar-height-mobile;
@@ -132,5 +139,8 @@
     &--login {
       padding: 8px 20px;
     }
+  }
+  .navbar-search {
+    display: none; // later we can add mobile slide-in search
   }
 }
