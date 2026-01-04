@@ -1,64 +1,69 @@
-import { useEffect, useState } from "react";
-import ProductCard from "./ProductCard";
+import { useState, useEffect } from "react";
 import "./Products.scss";
+import ProductCard from "./ProductCard";
+import { getProducts } from "../../services/products.api";
 
 const Products = ({ searchQuery = "" }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Fetch products once
   useEffect(() => {
-    const fetchProducts = async () => {
+    const loadProducts = async () => {
       try {
         setLoading(true);
-
-        // 🔁 Replace with your real API
-        const response = await fetch("/api/products");
-        if (!response.ok) throw new Error("Failed to fetch products");
-
-        const data = await response.json();
+        const data = await getProducts();
         setProducts(data);
+        setError(null);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to load products. Please try again later.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    loadProducts();
   }, []);
 
-  // 🔹 Derived data (NO state, NO useEffect)
+  // Filter products based on search query (derived data, no state needed)
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // 🔹 UI states
-  if (loading) {
-    return <div className="products-status">Loading products...</div>;
-  }
-
-  if (error) {
-    return <div className="products-status error">{error}</div>;
-  }
-
-  if (!filteredProducts.length) {
-    return (
-      <div className="products-status">
-        No products found{searchQuery && ` for "${searchQuery}"`}
-      </div>
-    );
-  }
-
   return (
-    <section className="products">
-      <div className="products-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <div className="border-div">
+      <div className="border">
+        {loading && (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p className="loading-text">Loading products...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="error-container">
+            <p className="error-text">{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && !filteredProducts.length && (
+          <div className="error-container">
+            <p className="error-text">
+              No products found{searchQuery && ` for "${searchQuery}"`}
+            </p>
+          </div>
+        )}
+
+        {!loading && !error && filteredProducts.length > 0 && (
+          <div className="products-grid">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 
