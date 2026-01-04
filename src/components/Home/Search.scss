@@ -1,0 +1,84 @@
+@use "../../styles/variables.scss" as v;
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  max-width: 420px;
+  height: 48px;
+
+  background-color: v.$dark-search;
+  border: 2px dotted v.$orange;
+  padding: 0 14px;
+
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: v.$orange;
+    box-shadow: 0 0 18px rgba(v.$orange, 0.6);
+    transform: translateY(-1px);
+  }
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: v.$orange;
+    opacity: 0.9;
+  }
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: v.$white;
+  font-family: v.$font-main;
+  font-size: 14px;
+
+  &::placeholder {
+    color: v.$gray;
+    opacity: 0.8;
+  }
+}
+
+.clear-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-size: 18px;
+  color: v.$orange;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+    color: v.$white;
+  }
+}
+
+/* Responsive */
+@media (max-width: v.$tablet) {
+  .search {
+    max-width: 100%;
+    height: 44px;
+  }
+}
