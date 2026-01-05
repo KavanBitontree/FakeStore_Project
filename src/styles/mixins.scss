@@ -16,7 +16,11 @@
 }
 
 // Transition Mixin
-@mixin transition($properties: all, $duration: v.$transition-base, $easing: v.$transition-ease) {
+@mixin transition(
+  $properties: all,
+  $duration: v.$transition-base,
+  $easing: v.$transition-ease
+) {
   transition: $properties $duration $easing;
 }
 
@@ -103,3 +107,35 @@
   overflow: hidden;
 }
 
+// Animated border mixin
+@mixin animated-border(
+  $border-color: v.$orange,
+  $border-width: 2px,
+  $dash-length: 6px,
+  $animation-speed: v.$transition-slow
+) {
+  border: none;
+  background-color: transparent;
+
+  background-image: linear-gradient(90deg, $border-color 50%, transparent 0),
+    linear-gradient(90deg, $border-color 50%, transparent 0),
+    linear-gradient(0deg, $border-color 50%, transparent 0),
+    linear-gradient(0deg, $border-color 50%, transparent 0);
+
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: $dash-length $border-width, $dash-length $border-width,
+    $border-width $dash-length, $border-width $dash-length;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+
+  background-origin: border-box;
+  background-clip: border-box, border-box, border-box, border-box;
+
+  animation: linearGradientMove $animation-speed linear infinite;
+}
+
+// Keyframe for animated border (include once globally)
+@keyframes linearGradientMove {
+  100% {
+    background-position: 6px 0, -6px 100%, 0 -6px, 100% 6px;
+  }
+}
