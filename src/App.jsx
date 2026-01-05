@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
+import { ROUTES } from "./routes/routes";
 
 // Component to scroll to top on route change
 function ScrollToTop() {
@@ -20,9 +21,9 @@ function App() {
     <main>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products/:id" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.PRODUCT_DETAIL} element={<Product />} />
+        <Route path={ROUTES.CART} element={<Cart />} />
       </Routes>
     </main>
   );

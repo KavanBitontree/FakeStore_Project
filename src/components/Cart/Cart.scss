@@ -1,0 +1,243 @@
+@use "../../styles/variables.scss" as v;
+@use "../../styles/mixins.scss" as m;
+
+.border-div {
+  padding: 10px;
+  width: 100%;
+  flex: 1;
+  @include m.flex-column;
+  min-height: 0;
+  box-shadow: 0 2px 15px rgba(255, 107, 53, 0.2),
+    0 0 30px rgba(255, 107, 53, 0.15);
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  @include m.tablet {
+    padding: 0;
+  }
+
+  @include m.mobile {
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+.border {
+  @include m.flex-column;
+  @include m.animated-border();
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  position: relative;
+  padding: v.$spacing-md;
+  box-sizing: border-box;
+  min-height: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+
+  @include m.tablet {
+    padding: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-xs;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+.cart-container {
+  @include m.flex-column;
+  gap: v.$spacing-lg;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cart-header {
+  @include m.flex-between;
+  align-items: center;
+  padding-bottom: v.$spacing-md;
+  border-bottom: 2px solid v.$orange;
+
+  @include m.mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: v.$spacing-sm;
+  }
+}
+
+.cart-title {
+  color: v.$white;
+  font-size: v.$h1-size;
+  font-weight: v.$font-weight-bold;
+  margin: 0;
+
+  @include m.tablet {
+    font-size: v.$h2-size;
+  }
+
+  @include m.mobile {
+    font-size: v.$h3-size;
+  }
+}
+
+.clear-cart-btn {
+  @include m.button-base;
+  @include m.border-solid;
+  background-color: transparent;
+  color: v.$orange;
+  padding: 10px 20px;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-semibold;
+  @include m.button-hover(v.$orange, v.$dark-bg);
+
+  &:hover {
+    box-shadow: v.$shadow-glow;
+  }
+
+  @include m.mobile {
+    width: 100%;
+    padding: 8px 16px;
+  }
+}
+
+.cart-items {
+  @include m.flex-column;
+  gap: v.$spacing-md;
+
+  @include m.mobile {
+    gap: v.$spacing-sm;
+  }
+}
+
+.empty-cart {
+  @include m.flex-column;
+  @include m.flex-center;
+  padding: v.$spacing-lg;
+  text-align: center;
+  gap: v.$spacing-sm;
+}
+
+.empty-cart-text {
+  color: v.$white;
+  font-size: v.$font-size-xl;
+  font-weight: v.$font-weight-semibold;
+  margin: 0;
+
+  @include m.mobile {
+    font-size: v.$font-size-lg;
+  }
+}
+
+.empty-cart-subtext {
+  color: v.$gray-light;
+  font-size: v.$font-size-base;
+  margin: 0;
+
+  @include m.mobile {
+    font-size: v.$font-size-sm;
+  }
+}
+
+.cart-summary {
+  @include m.flex-column;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md;
+  background-color: v.$dark-surface;
+  @include m.border-solid;
+  margin-top: v.$spacing-lg;
+
+  @include m.mobile {
+    padding: v.$spacing-sm;
+  }
+}
+
+.summary-row {
+  @include m.flex-between;
+  align-items: center;
+  color: v.$white;
+  font-size: v.$font-size-base;
+
+  &.summary-total {
+    padding-top: v.$spacing-sm;
+    border-top: 2px solid v.$orange;
+    margin-top: v.$spacing-xs;
+    font-size: v.$font-size-lg;
+    font-weight: v.$font-weight-bold;
+
+    @include m.mobile {
+      font-size: v.$font-size-base;
+    }
+  }
+
+  @include m.mobile {
+    font-size: v.$font-size-sm;
+  }
+}
+
+.summary-label {
+  color: v.$gray-light;
+}
+
+.summary-value {
+  color: v.$orange;
+  font-weight: v.$font-weight-bold;
+}
+
+.checkout-btn {
+  @include m.button-base;
+  @include m.border-solid;
+  background-color: v.$orange;
+  color: v.$dark-bg;
+  padding: 14px 24px;
+  font-size: v.$font-size-base;
+  font-weight: v.$font-weight-bold;
+  margin-top: v.$spacing-sm;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover {
+    background-color: v.$orange-dark;
+    box-shadow: v.$shadow-glow;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @include m.mobile {
+    padding: 12px 20px;
+    font-size: v.$font-size-sm;
+  }
+}
+
+.loading-container,
+.error-container {
+  @include m.flex-column;
+  @include m.flex-center;
+  padding: v.$spacing-lg;
+  text-align: center;
+}
+
+.loading-text,
+.error-text {
+  color: v.$white;
+  font-size: v.$font-size-lg;
+  margin-top: v.$spacing-md;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid v.$gray;
+  border-top-color: v.$orange;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
