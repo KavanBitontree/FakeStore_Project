@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { getCartItemCount, getCartTotal } from "../../../utils/cartUtils";
 import Logo from "./Logo";
+import Search from "../../Home/Search";
 import "./Navbar.scss";
 
-export default function Navbar() {
+export default function Navbar({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
@@ -34,12 +35,12 @@ export default function Navbar() {
       updateCartInfo();
     };
 
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, [updateCartInfo]);
 
   const handleCartClick = () => {
-    navigate('/cart');
+    navigate("/cart");
   };
 
   const isCartEmpty = cartCount === 0;
@@ -50,10 +51,15 @@ export default function Navbar() {
         <Logo />
       </div>
 
+      {/* 🔍 Search in center */}
+      <div className="navbar-search">
+        <Search onSearch={onSearch} />
+      </div>
+
       <div className="nav-actions">
         <button className="nav-button nav-button--login">Login</button>
-        <button 
-          className="nav-button nav-button--cart" 
+        <button
+          className="nav-button nav-button--cart"
           disabled={isCartEmpty}
           onClick={handleCartClick}
         >

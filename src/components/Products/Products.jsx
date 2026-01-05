@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./Products.scss";
 import ProductCard from "./ProductCard";
 import { getProducts } from "../../services/products.api";
 
-const Products = () => {
+const Products = ({ searchQuery = "" }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🔹 Fetch products once
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -16,8 +17,8 @@ const Products = () => {
         setProducts(data);
         setError(null);
       } catch (err) {
-        setError("Failed to load products. Please try again later.");
         console.error(err);
+        setError("Failed to load products. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -25,6 +26,15 @@ const Products = () => {
 
     loadProducts();
   }, []);
+
+  // 🔹 Search logic (derived data)
+  const searchedProducts = useMemo(() => {
+    if (!searchQuery) return products;
+
+    return products.filter((product) =>
+      product.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [products, searchQuery]);
 
   return (
     <div className="border-div">
@@ -43,11 +53,21 @@ const Products = () => {
         )}
 
         {!loading && !error && (
-          <div className="products-grid">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            {searchedProducts.length === 0 ? (
+              <div className="error-container">
+                <p className="error-text">
+                  No products found{searchQuery && ` for "${searchQuery}"`}
+                </p>
+              </div>
+            ) : (
+              <div className="products-grid">
+                {searchedProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
