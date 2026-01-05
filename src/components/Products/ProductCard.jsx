@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  getProductQuantity, 
-  addToCart, 
+import {
+  getProductQuantity,
+  addToCart,
   updateCartQuantity,
-  removeFromCart 
+  removeFromCart,
 } from "../../utils/cartUtils";
 import "./ProductCard.scss";
 
@@ -29,8 +29,8 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
       loadQuantity();
     };
 
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, [product?.id]);
 
   useEffect(() => {
@@ -94,8 +94,10 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
 
   return (
     <div className="product-card">
-      <div 
-        className={`product-image-container ${!disableNavigation ? 'clickable-image' : ''}`}
+      <div
+        className={`product-image-container ${
+          !disableNavigation ? "clickable-image" : ""
+        }`}
         onClick={handleImageClick}
       >
         {isVisible && product?.image ? (
@@ -111,7 +113,11 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
       </div>
 
       <div className="product-info">
-        <h3 className={`product-title ${showFullDescription ? 'full-description' : ''}`}>
+        <h3
+          className={`product-title ${
+            showFullDescription ? "full-description" : ""
+          }`}
+        >
           {product.title}
         </h3>
         <p className="product-category">{product.category}</p>
@@ -132,10 +138,7 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
           {quantity === 0 ? (
-            <button
-              className="add-to-cart-btn"
-              onClick={handleAddToCart}
-            >
+            <button className="add-to-cart-btn" onClick={handleAddToCart}>
               Add
             </button>
           ) : (

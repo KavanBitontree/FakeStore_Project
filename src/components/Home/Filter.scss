@@ -1,0 +1,152 @@
+@use "../../styles/variables.scss" as v;
+@use "../../styles/mixins.scss" as m;
+
+.filter-container {
+  background-color: v.$dark-surface;
+  @include m.border-dotted;
+  padding: v.$spacing-sm;
+  @include m.flex-column;
+  gap: v.$spacing-sm;
+  margin-bottom: v.$spacing-md;
+
+  @include m.mobile {
+    padding: v.$spacing-xs;
+    gap: v.$spacing-xs;
+  }
+}
+
+.filter-header {
+  @include m.flex-between;
+  align-items: center;
+  padding-bottom: v.$spacing-xs;
+  border-bottom: 1px dotted v.$orange;
+}
+
+.filter-title {
+  color: v.$orange;
+  font-size: v.$font-size-lg;
+  font-weight: v.$font-weight-bold;
+  margin: 0;
+
+  @include m.mobile {
+    font-size: v.$font-size-base;
+  }
+}
+
+.reset-btn {
+  @include m.button-base;
+  background-color: transparent;
+  color: v.$orange;
+  font-size: v.$font-size-xs;
+  padding: 4px 12px;
+  border: 1px solid v.$orange;
+  border-radius: v.$radius-sm;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover {
+    background-color: v.$orange;
+    color: v.$dark-bg;
+  }
+}
+
+.filter-section {
+  @include m.flex-column;
+  gap: v.$spacing-xs;
+}
+
+.filter-label {
+  color: v.$white;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-semibold;
+
+  @include m.mobile {
+    font-size: v.$font-size-xs;
+  }
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: v.$spacing-xs;
+
+  @include m.mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+}
+
+.category-btn {
+  @include m.button-base;
+  background-color: transparent;
+  color: v.$gray-light;
+  font-size: v.$font-size-xs;
+  padding: 8px 12px;
+  border: 1px solid v.$gray;
+  border-radius: v.$radius-sm;
+  text-transform: capitalize;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover {
+    border-color: v.$orange;
+    color: v.$orange;
+  }
+
+  &.active {
+    background-color: v.$orange;
+    border-color: v.$orange;
+    color: v.$dark-bg;
+    font-weight: v.$font-weight-bold;
+  }
+
+  @include m.mobile {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+}
+
+.price-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: v.$radius-full;
+  background: linear-gradient(
+    to right,
+    v.$orange 0%,
+    v.$orange var(--value),
+    v.$gray var(--value),
+    v.$gray 100%
+  );
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: v.$orange;
+    cursor: pointer;
+    border: 2px solid v.$white;
+    box-shadow: v.$shadow-sm;
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: v.$orange;
+    cursor: pointer;
+    border: 2px solid v.$white;
+    box-shadow: v.$shadow-sm;
+  }
+}
+
+.price-labels {
+  @include m.flex-between;
+  color: v.$gray;
+  font-size: v.$font-size-xs;
+
+  @include m.mobile {
+    font-size: 10px;
+  }
+}
