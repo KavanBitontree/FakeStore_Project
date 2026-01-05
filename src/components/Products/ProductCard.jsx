@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getProductQuantity, addToCart } from "../../utils/cartUtils";
 import {
-  getProductQuantity,
-  addToCart,
-  updateCartQuantity,
-  removeFromCart,
-} from "../../utils/cartUtils";
+  handleIncrement,
+  handleDecrement,
+  handleImageClick as handleImageNav,
+} from "../../utils/handlers";
 import "./ProductCard.scss";
 
 const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
@@ -13,6 +13,7 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const navigate = useNavigate();
+  const MAX_STOCK = product.rating?.count ?? 5;
 
   // Load quantity from cart on mount and when cart updates
   useEffect(() => {
@@ -54,12 +55,6 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
     return () => observer.disconnect();
   }, []);
 
-  const handleImageClick = () => {
-    if (!disableNavigation && product?.id) {
-      navigate(`/products/${product.id}`);
-    }
-  };
-
   const handleAddToCart = () => {
     if (product) {
       addToCart(product);
@@ -67,24 +62,17 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
     }
   };
 
-  const handleIncrement = () => {
-    if (product) {
-      const newQuantity = quantity + 1;
-      updateCartQuantity(product.id, newQuantity);
-      setQuantity(newQuantity);
+  const handleIncrementWithStock = () => {
+    if (quantity >= MAX_STOCK) {
+      alert(`Stock is only ${MAX_STOCK} items for this product!`);
+      return;
     }
+    handleIncrement(product, quantity, setQuantity);
   };
 
-  const handleDecrement = () => {
-    if (product && quantity > 0) {
-      const newQuantity = quantity - 1;
-      if (newQuantity === 0) {
-        removeFromCart(product.id);
-        setQuantity(0);
-      } else {
-        updateCartQuantity(product.id, newQuantity);
-        setQuantity(newQuantity);
-      }
+  const onImageClick = () => {
+    if (!disableNavigation && product?.id) {
+      handleImageNav(navigate, product.id);
     }
   };
 
@@ -98,7 +86,7 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
         className={`product-image-container ${
           !disableNavigation ? "clickable-image" : ""
         }`}
-        onClick={handleImageClick}
+        onClick={onImageClick}
       >
         {isVisible && product?.image ? (
           <img
@@ -145,14 +133,14 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
             <div className="quantity-controls">
               <button
                 className="quantity-btn quantity-btn--decrement"
-                onClick={handleDecrement}
+                onClick={() => handleDecrement(product, quantity, setQuantity)}
               >
                 -
               </button>
               <span className="quantity-display">{quantity}</span>
               <button
                 className="quantity-btn quantity-btn--increment"
-                onClick={handleIncrement}
+                onClick={handleIncrementWithStock}
               >
                 +
               </button>
