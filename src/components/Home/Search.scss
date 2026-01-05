@@ -46,7 +46,7 @@
 
   color: v.$white;
   font-family: v.$font-main;
-  font-size: 14px;
+  font-size: v.$font-size-sm;
 
   &::placeholder {
     color: v.$gray;
@@ -59,7 +59,7 @@
   border: none;
   cursor: pointer;
 
-  font-size: 18px;
+  font-size: v.$font-size-md;
   color: v.$orange;
   font-weight: 700;
 

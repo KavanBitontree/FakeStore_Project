@@ -100,7 +100,7 @@
 
   @include m.mobile {
     padding: 6px 8px;
-    font-size: 10px;
+    font-size: v.$font-size-xs;
   }
 }
 
@@ -147,6 +147,6 @@
   font-size: v.$font-size-xs;
 
   @include m.mobile {
-    font-size: 10px;
+    font-size: v.$font-size-xs;
   }
 }
