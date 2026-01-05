@@ -1,39 +1,29 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateCartQuantity, removeFromCart } from "../../utils/cartUtils";
+import { removeFromCart } from "../../utils/cartUtils";
+import {
+  handleIncrement,
+  handleDecrement,
+  handleImageClick,
+} from "../../utils/handlers";
 import "./CartCard.scss";
 
 const CartCard = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const navigate = useNavigate();
 
-  const handleIncrement = () => {
-    const newQuantity = quantity + 1;
-    updateCartQuantity(product.id, newQuantity);
-    setQuantity(newQuantity);
-  };
-
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      updateCartQuantity(product.id, newQuantity);
-      setQuantity(newQuantity);
-    }
-  };
-
   const handleRemove = () => {
     removeFromCart(product.id);
-  };
-
-  const handleImageClick = () => {
-    navigate(`/products/${product.id}`);
   };
 
   const itemTotal = (product.price * quantity).toFixed(2);
 
   return (
     <div className="cart-card">
-      <div className="cart-card-image-container" onClick={handleImageClick}>
+      <div
+        className="cart-card-image-container"
+        onClick={() => handleImageClick(navigate, product.id)}
+      >
         <img
           src={product.image}
           alt={product.title}
@@ -61,13 +51,16 @@ const CartCard = ({ product }) => {
         <div className="quantity-controls">
           <button
             className="quantity-btn"
-            onClick={handleDecrement}
+            onClick={() => handleDecrement(product, quantity, setQuantity)}
             disabled={quantity <= 1}
           >
             -
           </button>
           <span className="quantity-display">{quantity}</span>
-          <button className="quantity-btn" onClick={handleIncrement}>
+          <button
+            className="quantity-btn"
+            onClick={() => handleIncrement(product, quantity, setQuantity)}
+          >
             +
           </button>
         </div>
