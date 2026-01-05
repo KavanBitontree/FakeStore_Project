@@ -1,0 +1,99 @@
+@use "../../styles/variables.scss" as v;
+@use "../../styles/mixins.scss" as m;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-xs;
+  margin-top: v.$spacing-md;
+  padding: v.$spacing-sm 0;
+
+  @include m.mobile {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+}
+
+.pagination-btn {
+  @include m.button-base;
+  background-color: transparent;
+  color: v.$orange;
+  padding: 8px 16px;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-semibold;
+  border: 1px solid v.$orange;
+  border-radius: v.$radius-sm;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover:not(:disabled) {
+    background-color: v.$orange;
+    color: v.$dark-bg;
+    box-shadow: v.$shadow-sm;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: v.$gray;
+    color: v.$gray;
+  }
+
+  @include m.mobile {
+    padding: 6px 12px;
+    font-size: v.$font-size-xs;
+  }
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  @include m.mobile {
+    gap: 2px;
+  }
+}
+
+.pagination-number {
+  @include m.button-base;
+  background-color: transparent;
+  color: v.$white;
+  width: 40px;
+  height: 40px;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-semibold;
+  border: 1px solid v.$gray;
+  border-radius: v.$radius-sm;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover {
+    border-color: v.$orange;
+    color: v.$orange;
+  }
+
+  &.active {
+    background-color: v.$orange;
+    border-color: v.$orange;
+    color: v.$dark-bg;
+    font-weight: v.$font-weight-bold;
+  }
+
+  @include m.mobile {
+    width: 32px;
+    height: 32px;
+    font-size: v.$font-size-xs;
+  }
+}
+
+.pagination-ellipsis {
+  color: v.$gray;
+  padding: 0 8px;
+  font-size: v.$font-size-base;
+  user-select: none;
+
+  @include m.mobile {
+    padding: 0 4px;
+    font-size: v.$font-size-sm;
+  }
+}
