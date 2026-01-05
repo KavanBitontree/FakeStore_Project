@@ -13,7 +13,7 @@ const ProductCard = ({ product, showFullDescription, disableNavigation }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const navigate = useNavigate();
-  const MAX_STOCK = 10;
+  const MAX_STOCK = product.rating?.count ?? 5;
 
   // Load quantity from cart on mount and when cart updates
   useEffect(() => {
