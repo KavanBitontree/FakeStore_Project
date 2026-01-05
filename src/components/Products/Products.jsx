@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Products.scss";
 import ProductCard from "./ProductCard";
-import { fetchProducts } from "../../config/api";
+import { getProducts } from "../../services/products.api";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +12,7 @@ const Products = () => {
     const loadProducts = async () => {
       try {
         setLoading(true);
-        const data = await fetchProducts();
+        const data = await getProducts();
         setProducts(data);
         setError(null);
       } catch (err) {
@@ -25,11 +25,6 @@ const Products = () => {
 
     loadProducts();
   }, []);
-
-  const handleAddToCart = (product) => {
-    console.log("Adding to cart:", product);
-    // Add your cart logic here
-  };
 
   return (
     <div className="border-div">
@@ -50,11 +45,7 @@ const Products = () => {
         {!loading && !error && (
           <div className="products-grid">
             {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

@@ -1,39 +1,73 @@
 @use "../../styles/variables.scss" as v;
+@use "../../styles/mixins.scss" as m;
 
 .product-card {
   background-color: v.$dark-surface;
-  border: 2px dotted v.$orange;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  @include m.border-dotted;
+  padding: v.$spacing-sm + 4px;
+  @include m.flex-column;
   gap: 12px;
-  transition: all 0.3s ease;
+  @include m.transition();
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+    @include m.shadow-md;
   }
 
-  @media (max-width: v.$tablet) {
-    padding: 16px;
-    border: 2px solid v.$orange;
+  @include m.tablet {
+    padding: v.$spacing-sm;
+    @include m.border-solid;
+    gap: 10px;
+  }
+
+  @include m.mobile {
+    padding: 10px;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 }
 
 .product-image-container {
   width: 100%;
   height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include m.flex-center;
   background-color: v.$white;
   padding: 12px;
   border: 1px solid v.$gray-light;
 
-  @media (max-width: v.$tablet) {
-    height: 200px;
+  @include m.tablet {
+    height: 180px;
+    padding: 10px;
   }
+
+  @include m.mobile {
+    height: 160px;
+    padding: 8px;
+  }
+
+  &.clickable-image {
+    cursor: pointer;
+    @include m.transition();
+
+    &:hover {
+      border-color: v.$orange;
+      @include m.shadow-sm;
+    }
+  }
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: v.$gray-light;
+  opacity: 0.3;
 }
 
 .product-image {
@@ -43,32 +77,48 @@
 }
 
 .product-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @include m.flex-column;
+  gap: v.$spacing-xs;
   flex: 1;
 }
 
 .product-title {
   color: v.$white;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: v.$font-size-base;
+  font-weight: v.$font-weight-semibold;
   line-height: 1.4;
   margin: 0;
   height: 44px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include m.text-ellipsis;
   display: block;
 
-  @media (max-width: v.$tablet) {
-    font-size: 14px;
+  @include m.tablet {
+    font-size: v.$font-size-sm;
     height: 40px;
+  }
+
+  @include m.mobile {
+    font-size: v.$font-size-sm;
+    height: auto;
+    min-height: 36px;
+  }
+
+  &.full-description {
+    height: auto;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: unset;
+
+    @include m.mobile {
+      font-size: v.$font-size-sm;
+      line-height: 1.5;
+    }
   }
 }
 
 .product-category {
   color: v.$orange;
-  font-size: 12px;
+  font-size: v.$font-size-xs;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0;
@@ -77,81 +127,175 @@
 .product-rating {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: v.$spacing-xs;
+  font-size: v.$font-size-sm;
 }
 
 .rating-stars {
   color: v.$orange;
-  font-weight: 600;
+  font-weight: v.$font-weight-semibold;
 }
 
 .rating-count {
   color: v.$gray;
-  font-size: 12px;
+  font-size: v.$font-size-xs;
 }
 
 .product-description {
   color: v.$gray-light;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: v.$font-size-sm;
+  line-height: v.$line-height-normal;
   margin: 0;
   flex: 1;
 
-  @media (max-width: v.$tablet) {
-    font-size: 12px;
+  @include m.tablet {
+    font-size: v.$font-size-xs;
+  }
+
+  @include m.mobile {
+    font-size: v.$font-size-xs;
+    line-height: 1.4;
   }
 }
 
 .product-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include m.flex-between;
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px dotted v.$orange;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  gap: 8px;
+
+  @include m.tablet {
+    margin-top: 8px;
+    padding-top: 8px;
+    gap: 6px;
+  }
+
+  @include m.mobile {
+    margin-top: 6px;
+    padding-top: 6px;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
 }
 
 .product-price {
   color: v.$orange;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: v.$font-size-xl;
+  font-weight: v.$font-weight-bold;
+  flex-shrink: 0;
+  min-width: fit-content;
 
-  @media (max-width: v.$tablet) {
-    font-size: 20px;
+  @include m.tablet {
+    font-size: v.$font-size-lg;
+  }
+
+  @include m.mobile {
+    font-size: v.$font-size-base;
+    flex-shrink: 1;
   }
 }
 
 .add-to-cart-btn {
-  font-family: v.$font-main;
+  @include m.button-base;
   width: 48px;
   height: 48px;
-  border: 2px solid v.$orange;
+  @include m.border-solid;
   background-color: transparent;
   color: v.$orange;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-bold;
+  line-height: 1;
+  flex-shrink: 0;
+
+  @include m.button-hover(v.$orange, v.$dark-bg);
+  &:hover {
+    transform: scale(1.1);
+    @include m.shadow-glow;
+  }
+
+  @include m.button-active;
+
+  @include m.tablet {
+    width: 36px;
+    height: 36px;
+    font-size: v.$font-size-sm;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  @include m.mobile {
+    width: 32px;
+    height: 32px;
+    font-size: v.$font-size-xs;
+    flex-shrink: 0;
+    min-width: 32px;
+  }
+}
+
+.quantity-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: v.$spacing-xs;
+  @include m.border-solid;
+  border-radius: v.$radius-sm;
+  padding: 4px;
+  flex-shrink: 0;
+  min-width: fit-content;
+
+  @include m.tablet {
+    gap: 4px;
+    padding: 2px;
+  }
+
+  @include m.mobile {
+    gap: 2px;
+    padding: 2px;
+    flex-shrink: 0;
+  }
+}
+
+.quantity-btn {
+  @include m.button-base;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  color: v.$orange;
+  font-size: v.$font-size-lg;
+  font-weight: v.$font-weight-bold;
   line-height: 1;
+  border-radius: v.$radius-sm;
 
-  &:hover {
-    background-color: v.$orange;
-    color: v.$dark-bg;
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(v.$orange, 0.5);
-  }
-
+  @include m.button-hover(v.$orange, v.$dark-bg);
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
   }
 
-  @media (max-width: v.$tablet) {
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
+  @include m.tablet {
+    width: 26px;
+    height: 26px;
+    font-size: v.$font-size-base;
+  }
+
+  @include m.mobile {
+    width: 24px;
+    height: 24px;
+    font-size: v.$font-size-sm;
+  }
+}
+
+.quantity-display {
+  color: v.$orange;
+  font-size: v.$font-size-base;
+  font-weight: v.$font-weight-bold;
+  min-width: 24px;
+  text-align: center;
+
+  @include m.tablet {
+    font-size: v.$font-size-xs;
+    min-width: 20px;
   }
 }
