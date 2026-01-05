@@ -43,10 +43,10 @@ const Product = () => {
           {loading && <p>Loading product...</p>}
           {error && <p>{error}</p>}
           {product && (
-            <ProductCard 
-              product={product} 
-              showFullDescription 
-              disableNavigation 
+            <ProductCard
+              product={product}
+              showFullDescription
+              disableNavigation
             />
           )}
         </div>
