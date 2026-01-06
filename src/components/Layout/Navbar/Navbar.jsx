@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ShoppingCart, User } from "lucide-react";
+
 import { getCartItemCount, getCartTotal } from "../../../utils/cartUtils";
 import { useAuth } from "../../../context/AuthContext";
 import { ROUTES } from "../../../routes/routes";
+
 import Logo from "./Logo";
 import Search from "../../Home/Search";
 import "./Navbar.scss";
@@ -12,16 +14,14 @@ export default function Navbar({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
-  const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
 
+  const navigate = useNavigate();
+  const location = useLocation(); // 🔹 detect current path
+  const { isAuthenticated, logout } = useAuth();
+
+  /* ---------- Scroll ---------- */
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 100);
-  }, []);
-
-  const updateCartInfo = useCallback(() => {
-    setCartCount(getCartItemCount());
-    setCartTotal(getCartTotal());
   }, []);
 
   useEffect(() => {
@@ -29,32 +29,30 @@ export default function Navbar({ onSearch }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  /* ---------- Cart ---------- */
+  const updateCartInfo = useCallback(() => {
+    setCartCount(getCartItemCount());
+    setCartTotal(getCartTotal());
+  }, []);
+
   useEffect(() => {
-    // Load initial cart info
     updateCartInfo();
-
-    // Listen for cart updates
-    const handleCartUpdate = () => {
-      updateCartInfo();
-    };
-
-    window.addEventListener("cartUpdated", handleCartUpdate);
-    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
+    window.addEventListener("cartUpdated", updateCartInfo);
+    return () => window.removeEventListener("cartUpdated", updateCartInfo);
   }, [updateCartInfo]);
 
-  const handleCartClick = () => {
-    navigate(ROUTES.CART);
+  /* ---------- Actions ---------- */
+  const handleLogin = () => navigate(ROUTES.LOGIN);
+  const handleProfile = () => navigate(ROUTES.PROFILE);
+  const handleLogout = () => {
+    logout();
+    navigate(ROUTES.LOGIN);
   };
-
-  const handleLoginClick = () => {
-    if (isAuthenticated) {
-      logout();
-    } else {
-      navigate(ROUTES.LOGIN);
-    }
-  };
+  const handleCart = () => navigate(ROUTES.CART);
 
   const isCartEmpty = cartCount === 0;
+
+  const showProfileIcon = location.pathname !== ROUTES.PROFILE; // 🔹 hide on profile page
 
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
@@ -62,28 +60,50 @@ export default function Navbar({ onSearch }) {
         <Logo />
       </div>
 
-      {/* 🔍 Search in center */}
       <div className="navbar-search">
         <Search onSearch={onSearch} />
       </div>
 
       <div className="nav-actions">
-        <button
-          className="nav-button nav-button--login"
-          onClick={handleLoginClick}
-        >
-          {isAuthenticated ? `Logout (${user?.username})` : "Login"}
-        </button>
+        {!isAuthenticated ? (
+          <button
+            className="nav-button nav-button--login"
+            onClick={handleLogin}
+          >
+            Login
+          </button>
+        ) : (
+          <>
+            {showProfileIcon && (
+              <button
+                className="nav-button nav-button--icon"
+                onClick={handleProfile}
+                aria-label="Profile"
+              >
+                <User size={18} />
+              </button>
+            )}
+
+            <button
+              className="nav-button nav-button--login"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </>
+        )}
+
         <button
           className="nav-button nav-button--cart"
           disabled={isCartEmpty}
-          onClick={handleCartClick}
+          onClick={handleCart}
         >
-          <ShoppingCart size={20} />
+          <ShoppingCart size={18} />
           <span>MyCart</span>
+
           {!isCartEmpty && (
             <span className="cart-badge">
-              Items: {cartCount} | ${cartTotal.toFixed(2)}
+              {cartCount} · ₹{cartTotal.toFixed(2)}
             </span>
           )}
         </button>

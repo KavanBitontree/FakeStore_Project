@@ -9,4 +9,8 @@ export const API_ENDPOINTS = {
   SIGNUP: {
     SIGNUP: "/users",
   },
+  USERS: {
+    ROOT: "/users",
+    BY_ID: (id) => `/users/${id}`,
+  },
 };

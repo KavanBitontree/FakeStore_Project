@@ -1,0 +1,221 @@
+@use "../styles/variables.scss" as v;
+@use "../styles/mixins.scss" as m;
+
+.profile-wrapper {
+  min-height: 100vh;
+  background-color: v.$dark-bg;
+}
+
+.profile-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: v.$orange;
+  font-size: v.$font-size-lg;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-md;
+  padding: v.$spacing-md;
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------- LEFT COLUMN ----------------- */
+.profile-left {
+  @include m.flex-column;
+  gap: v.$spacing-md;
+}
+
+.profile-title {
+  color: v.$orange;
+  font-size: v.$h2-size;
+  font-weight: v.$font-weight-bold;
+  margin-bottom: v.$spacing-md;
+}
+
+.profile-card {
+  @include m.border-dotted;
+  padding: v.$spacing-md;
+  background: v.$dark-surface;
+  border-radius: v.$radius-md;
+
+  h3 {
+    color: v.$orange;
+    margin-bottom: v.$spacing-xs;
+    font-size: v.$font-size-md;
+    font-weight: v.$font-weight-semibold;
+  }
+
+  p {
+    display: flex;
+    justify-content: space-between;
+    font-size: v.$font-size-sm;
+    color: v.$gray-light;
+    margin-bottom: v.$spacing-xs;
+
+    span {
+      color: v.$white;
+      font-weight: v.$font-weight-semibold;
+    }
+
+    &.geo {
+      color: v.$gray;
+      font-size: v.$font-size-xs;
+    }
+  }
+}
+
+.profile-section {
+  margin-bottom: v.$spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ----------------- RIGHT COLUMN (EDIT FORM) ----------------- */
+.profile-right {
+  @include m.flex-column;
+  gap: v.$spacing-md;
+}
+
+.profile-form-card {
+  @include m.border-dotted;
+  padding: v.$spacing-md;
+  background: v.$dark-surface;
+  border-radius: v.$radius-md;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-xs;
+
+    label {
+      color: v.$white;
+      font-size: v.$font-size-sm;
+      font-weight: v.$font-weight-semibold;
+    }
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    border-radius: v.$radius-sm;
+    border: 1px solid v.$gray;
+    background-color: v.$dark-bg;
+    color: v.$white;
+    font-family: v.$font-main;
+    font-size: v.$font-size-sm;
+    @include m.transition();
+
+    &:focus {
+      border-color: v.$orange;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(v.$orange, 0.1);
+    }
+
+    &::placeholder {
+      color: v.$gray;
+    }
+  }
+
+  .form-error {
+    @include m.error-text();
+    font-size: v.$font-size-xs;
+    margin-top: 4px;
+  }
+
+  .profile-form-actions {
+    display: flex;
+    gap: v.$spacing-sm;
+    margin-top: v.$spacing-sm;
+
+    @include m.mobile {
+      flex-direction: column;
+    }
+  }
+
+  .profile-form-button {
+    flex: 1;
+    background-color: v.$orange;
+    color: v.$dark-bg;
+    padding: 12px 16px;
+    font-weight: v.$font-weight-bold;
+    font-size: v.$font-size-sm;
+    border-radius: v.$radius-sm;
+    border: none;
+    cursor: pointer;
+    @include m.transition();
+
+    &:hover:not(:disabled) {
+      background-color: v.$orange-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(v.$orange, 0.3);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: v.$gray;
+    }
+
+    &.profile-form-cancel {
+      background-color: transparent;
+      border: 1px solid v.$orange;
+      color: v.$orange;
+
+      &:hover:not(:disabled) {
+        background-color: v.$orange;
+        color: v.$dark-bg;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(v.$orange, 0.3);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+/* ----------------- RESPONSIVE ----------------- */
+@include m.tablet {
+  .profile-grid {
+    gap: v.$spacing-sm;
+    padding: v.$spacing-sm;
+  }
+
+  .profile-card {
+    padding: v.$spacing-sm;
+  }
+
+  .profile-form-card {
+    padding: v.$spacing-sm;
+  }
+}
+
+@include m.mobile {
+  .profile-title {
+    font-size: v.$h3-size;
+  }
+
+  .profile-card p {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
