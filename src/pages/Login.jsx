@@ -1,20 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/auth.api";
 import { ROUTES } from "../routes/routes";
+import { LoginSchema } from "../schemas/login";
 import "./Login.scss";
-
-const LoginSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .required("Username is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
 
 const Login = () => {
   const [error, setError] = useState("");
