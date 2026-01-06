@@ -9,17 +9,29 @@ import {
 import "./CartCard.scss";
 
 const CartCard = ({ product }) => {
-  const [quantity, setQuantity] = useState(product.quantity);
   const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(product.quantity);
+
+  // Use product stock (FakeStore: rating.count)
+  const maxStock = product.rating?.count ?? 5;
 
   const handleRemove = () => {
     removeFromCart(product.id);
+  };
+
+  const handleIncrementWithStock = () => {
+    if (quantity >= maxStock) {
+      alert(`Only ${maxStock} items available for this product`);
+      return;
+    }
+    handleIncrement(product, quantity, setQuantity);
   };
 
   const itemTotal = (product.price * quantity).toFixed(2);
 
   return (
     <div className="cart-card">
+      {/* IMAGE */}
       <div
         className="cart-card-image-container"
         onClick={() => handleImageClick(navigate, product.id)}
@@ -31,6 +43,7 @@ const CartCard = ({ product }) => {
         />
       </div>
 
+      {/* INFO */}
       <div className="cart-card-info">
         <h3 className="cart-card-title">{product.title}</h3>
         <p className="cart-card-category">{product.category}</p>
@@ -43,10 +56,11 @@ const CartCard = ({ product }) => {
         )}
 
         <div className="cart-card-stock">
-          <span className="stock-text">In stock</span>
+          <span className="stock-text">In stock ({maxStock})</span>
         </div>
       </div>
 
+      {/* ACTIONS */}
       <div className="cart-card-actions">
         <div className="quantity-controls">
           <button
@@ -56,11 +70,10 @@ const CartCard = ({ product }) => {
           >
             -
           </button>
+
           <span className="quantity-display">{quantity}</span>
-          <button
-            className="quantity-btn"
-            onClick={() => handleIncrement(product, quantity, setQuantity)}
-          >
+
+          <button className="quantity-btn" onClick={handleIncrementWithStock}>
             +
           </button>
         </div>
@@ -82,6 +95,7 @@ const CartCard = ({ product }) => {
         </button>
       </div>
 
+      {/* PRICE */}
       <div className="cart-card-price">
         <span className="price-label">Price</span>
         <span className="price-value">${itemTotal}</span>
