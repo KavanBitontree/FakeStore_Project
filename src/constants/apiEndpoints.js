@@ -3,4 +3,7 @@ export const API_ENDPOINTS = {
     ROOT: "/products",
     BY_ID: (id) => `/products/${id}`,
   },
+  LOGIN: {
+    LOGIN: "/auth/login",
+  },
 };

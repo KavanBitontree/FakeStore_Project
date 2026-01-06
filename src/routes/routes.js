@@ -4,6 +4,8 @@ export const ROUTES = {
   HOME: "/",
   PRODUCT_DETAIL: "/products/:id",
   CART: "/cart",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
 };
 
 /**

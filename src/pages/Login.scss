@@ -1,0 +1,144 @@
+@use "../styles/variables.scss" as v;
+@use "../styles/mixins.scss" as m;
+
+.login-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: v.$spacing-sm;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: row;
+  gap: v.$spacing-md;
+  width: 100%;
+  max-width: 700px; // horizontal layout
+  min-height: 60vh;
+
+  @include m.mobile {
+    flex-direction: column; // vertical on mobile
+    max-width: 100%;
+  }
+}
+
+.auth-card {
+  flex: 1;
+  min-width: 280px;
+  background-color: v.$dark-surface;
+  @include m.border-dotted;
+  @include m.flex-column;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md;
+
+  @include m.mobile {
+    padding: v.$spacing-sm;
+  }
+}
+
+.auth-title {
+  color: v.$orange;
+  font-size: v.$h2-size;
+  font-weight: v.$font-weight-bold;
+  text-align: center;
+  margin: 0;
+
+  @include m.mobile {
+    font-size: v.$h3-size;
+  }
+}
+
+.auth-subtitle {
+  color: v.$gray-light;
+  font-size: v.$font-size-sm;
+  text-align: center;
+  margin-bottom: v.$spacing-sm;
+
+  @include m.mobile {
+    font-size: v.$font-size-xs;
+  }
+}
+
+.auth-error {
+  @include m.error-box($border: #ff4444);
+}
+
+.form-error {
+  @include m.error-text();
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-xs;
+}
+
+.form-label {
+  color: v.$white;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-semibold;
+}
+
+.form-input {
+  padding: 10px 12px;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$gray;
+  background-color: v.$dark-bg;
+  color: v.$white;
+  font-family: v.$font-main;
+  @include m.transition();
+
+  &:focus {
+    border-color: v.$orange;
+    outline: none;
+  }
+}
+
+.auth-button {
+  @include m.button-base;
+  background-color: v.$orange;
+  color: v.$dark-bg;
+  padding: 12px 20px;
+  font-weight: v.$font-weight-bold;
+  border-radius: v.$radius-sm;
+  cursor: pointer;
+  @include m.transition();
+
+  &:hover:not(:disabled) {
+    background-color: v.$orange-dark;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: v.$spacing-sm;
+
+  .auth-link,
+  .auth-link-text {
+    font-size: v.$font-size-xs;
+    color: v.$orange;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

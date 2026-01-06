@@ -1,16 +1,20 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-  ],
-  server: {
-    allowedHosts: ["10285c1f383c.ngrok-free.app"],
-  },
+export default defineConfig(({ mode }) => {
+  // Load env based on mode (development / production)
+  const env = loadEnv(mode, process.cwd(), "");
+
+  return {
+    plugins: [
+      react({
+        babel: {
+          plugins: [["babel-plugin-react-compiler"]],
+        },
+      }),
+    ],
+    server: {
+      allowedHosts: [env.NGROK_HOST],
+    },
+  };
 });
