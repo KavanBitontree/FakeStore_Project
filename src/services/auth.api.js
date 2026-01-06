@@ -9,7 +9,7 @@ import { API_ENDPOINTS } from "../constants/apiEndpoints";
  */
 export const loginUser = async (username, password) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.LOGIN.LOGIN, {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
       username,
       password,
     });
@@ -27,6 +27,32 @@ export const loginUser = async (username, password) => {
 
     if (error.request) {
       // No response from server
+      throw new Error("Server not reachable");
+    }
+
+    throw error;
+  }
+};
+
+/**
+ * Signup user (Dummy)
+ */
+export const signupUser = async ({ username, email, password }) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.SIGNUP, {
+      id: 0,
+      username,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error("Signup failed");
+    }
+
+    if (error.request) {
       throw new Error("Server not reachable");
     }
 
