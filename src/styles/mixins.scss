@@ -139,3 +139,38 @@
     background-position: 6px 0, -6px 100%, 0 -6px, 100% 6px;
   }
 }
+
+// Reusable error box / text
+@mixin error-box(
+  $bg: rgba(255, 0, 0, 0.15),
+  $border: v.$orange,
+  $text: #ff2222,
+  $padding: v.$spacing-xs,
+  $radius: v.$radius-sm,
+  $font-size: v.$font-size-sm
+) {
+  background-color: $bg;
+  border: 1px solid $border;
+  color: $text;
+  padding: $padding;
+  border-radius: $radius;
+  font-size: $font-size;
+  font-weight: v.$font-weight-semibold;
+  text-align: center;
+
+  @include mobile {
+    font-size: v.$font-size-xs;
+    padding: calc($padding / 2);
+  }
+}
+
+// Inline error for form fields
+@mixin error-text($color: #ff2222, $font-size: v.$font-size-xs) {
+  color: $color;
+  font-size: $font-size;
+  margin-top: 4px;
+
+  @include mobile {
+    font-size: v.$font-size-xs;
+  }
+}

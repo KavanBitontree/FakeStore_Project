@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { getCartItemCount, getCartTotal } from "../../../utils/cartUtils";
+import { useAuth } from "../../../context/AuthContext";
+import { ROUTES } from "../../../routes/routes";
 import Logo from "./Logo";
 import Search from "../../Home/Search";
 import "./Navbar.scss";
@@ -11,6 +13,7 @@ export default function Navbar({ onSearch }) {
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 100);
@@ -40,7 +43,15 @@ export default function Navbar({ onSearch }) {
   }, [updateCartInfo]);
 
   const handleCartClick = () => {
-    navigate("/cart");
+    navigate(ROUTES.CART);
+  };
+
+  const handleLoginClick = () => {
+    if (isAuthenticated) {
+      logout();
+    } else {
+      navigate(ROUTES.LOGIN);
+    }
   };
 
   const isCartEmpty = cartCount === 0;
@@ -57,7 +68,12 @@ export default function Navbar({ onSearch }) {
       </div>
 
       <div className="nav-actions">
-        <button className="nav-button nav-button--login">Login</button>
+        <button
+          className="nav-button nav-button--login"
+          onClick={handleLoginClick}
+        >
+          {isAuthenticated ? `Logout (${user?.username})` : "Login"}
+        </button>
         <button
           className="nav-button nav-button--cart"
           disabled={isCartEmpty}

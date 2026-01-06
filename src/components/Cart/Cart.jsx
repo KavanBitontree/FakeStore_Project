@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Cart.scss";
 import CartCard from "./CartCard";
 import { getCartItems, getCartTotal, clearCart } from "../../utils/cartUtils";
+import { useAuth } from "../../context/AuthContext";
+import { ROUTES } from "../../routes/routes";
 
 const CartMain = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading } = useAuth();
+
   useEffect(() => {
     loadCart();
     setLoading(false);
 
-    // Listen for cart updates
-    const handleCartUpdate = () => {
-      loadCart();
-    };
-
+    const handleCartUpdate = () => loadCart();
     window.addEventListener("cartUpdated", handleCartUpdate);
+
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, []);
 
@@ -32,10 +35,20 @@ const CartMain = () => {
     }
   };
 
+  const handleCheckoutClick = () => {
+    if (!isAuthenticated) {
+      navigate(ROUTES.LOGIN);
+    } else {
+      // later you can route to /checkout
+      console.log("Proceed to checkout");
+    }
+  };
+
   const cartTotal = getCartTotal();
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  if (loading) {
+  // Wait for auth + cart to load
+  if (loading || authLoading) {
     return (
       <div className="border-div">
         <div className="border">
@@ -83,11 +96,17 @@ const CartMain = () => {
                   </span>
                   <span className="summary-value">${cartTotal.toFixed(2)}</span>
                 </div>
+
                 <div className="summary-row summary-total">
                   <span className="summary-label">Total:</span>
                   <span className="summary-value">${cartTotal.toFixed(2)}</span>
                 </div>
-                <button className="checkout-btn">Proceed to Checkout</button>
+
+                <button className="checkout-btn" onClick={handleCheckoutClick}>
+                  {isAuthenticated
+                    ? "Proceed to Checkout"
+                    : "Login to Checkout"}
+                </button>
               </div>
             </>
           )}
