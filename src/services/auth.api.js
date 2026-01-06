@@ -9,7 +9,7 @@ import { API_ENDPOINTS } from "../constants/apiEndpoints";
  */
 export const loginUser = async (username, password) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.LOGIN.LOGIN, {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
       username,
       password,
     });
@@ -39,7 +39,7 @@ export const loginUser = async (username, password) => {
  */
 export const signupUser = async ({ username, email, password }) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.SIGNUP.SIGNUP, {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.SIGNUP, {
       id: 0,
       username,
       email,

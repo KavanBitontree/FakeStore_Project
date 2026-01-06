@@ -3,10 +3,12 @@ export const API_ENDPOINTS = {
     ROOT: "/products",
     BY_ID: (id) => `/products/${id}`,
   },
-  LOGIN: {
+  AUTH: {
     LOGIN: "/auth/login",
-  },
-  SIGNUP: {
     SIGNUP: "/users",
+  },
+  USERS: {
+    ROOT: "/users",
+    BY_ID: (id) => `/users/${id}`,
   },
 };
