@@ -29,7 +29,7 @@ const Profile = () => {
     loadUser();
   }, [userId, isAuthenticated]);
 
-  if (!isAuthenticated) return null; // ProtectedRoute should redirect anyway
+  if (!isAuthenticated) return null;
 
   if (loading || !user)
     return (
@@ -108,7 +108,11 @@ const Profile = () => {
                     const confirm = window.confirm(
                       "Do you want to save changes?"
                     );
-                    if (!confirm) return;
+                    if (!confirm) {
+                      setSaving(false);
+                      setSubmitting(false);
+                      return;
+                    }
 
                     await updateUser(userId, {
                       username: values.username,
@@ -123,8 +127,9 @@ const Profile = () => {
                       email: values.email,
                       password: values.password,
                     }));
-                    resetForm({ values }); // reset dirty state
+                    resetForm({ values });
                   } catch (err) {
+                    console.error("Update error:", err);
                     alert("Failed to update profile. Try again.");
                   } finally {
                     setSaving(false);
@@ -132,14 +137,15 @@ const Profile = () => {
                   }
                 }}
               >
-                {({ isSubmitting, values, dirty, isValid }) => {
+                {({ isSubmitting, values, dirty, isValid, resetForm }) => {
                   const showConfirmPassword = values.password !== user.password;
 
                   return (
                     <Form className="profile-form">
                       <div className="form-group">
-                        <label>Username</label>
+                        <label htmlFor="username">Username</label>
                         <Field
+                          id="username"
                           name="username"
                           className="form-input"
                           placeholder="Enter username"
@@ -152,8 +158,9 @@ const Profile = () => {
                       </div>
 
                       <div className="form-group">
-                        <label>Email</label>
+                        <label htmlFor="email">Email</label>
                         <Field
+                          id="email"
                           name="email"
                           type="email"
                           className="form-input"
@@ -167,11 +174,13 @@ const Profile = () => {
                       </div>
 
                       <div className="form-group">
-                        <label>Password</label>
+                        <label htmlFor="password">Password</label>
                         <Field
+                          id="password"
                           name="password"
                           type="password"
                           className="form-input"
+                          placeholder="Enter password"
                         />
                         <ErrorMessage
                           name="password"
@@ -182,11 +191,15 @@ const Profile = () => {
 
                       {showConfirmPassword && (
                         <div className="form-group">
-                          <label>Confirm Password</label>
+                          <label htmlFor="confirmPassword">
+                            Confirm Password
+                          </label>
                           <Field
+                            id="confirmPassword"
                             name="confirmPassword"
                             type="password"
                             className="form-input"
+                            placeholder="Confirm your password"
                           />
                           <ErrorMessage
                             name="confirmPassword"
@@ -208,8 +221,9 @@ const Profile = () => {
                         </button>
 
                         <button
-                          type="reset"
+                          type="button"
                           className="profile-form-button profile-form-cancel"
+                          onClick={() => resetForm()}
                         >
                           Cancel
                         </button>
