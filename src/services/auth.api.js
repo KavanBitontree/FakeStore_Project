@@ -33,3 +33,29 @@ export const loginUser = async (username, password) => {
     throw error;
   }
 };
+
+/**
+ * Signup user (Dummy)
+ */
+export const signupUser = async ({ username, email, password }) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.SIGNUP.SIGNUP, {
+      id: 0,
+      username,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error("Signup failed");
+    }
+
+    if (error.request) {
+      throw new Error("Server not reachable");
+    }
+
+    throw error;
+  }
+};
