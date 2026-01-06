@@ -112,8 +112,8 @@
     to right,
     v.$orange 0%,
     v.$orange var(--value),
-    v.$gray var(--value),
-    v.$gray 100%
+    v.$white var(--value),
+    v.$white 100%
   );
   outline: none;
   appearance: none;
