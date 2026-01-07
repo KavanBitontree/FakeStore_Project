@@ -13,7 +13,7 @@ const CartCard = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
 
   // Use product stock (FakeStore: rating.count)
-  const maxStock = product.rating?.count ?? 5;
+  const maxStock = 10;
 
   const handleRemove = () => {
     removeFromCart(product.id);

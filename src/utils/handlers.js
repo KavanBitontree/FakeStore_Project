@@ -2,6 +2,7 @@
 
 import { updateCartQuantity, removeFromCart } from "./cartUtils";
 import { getProductRoute } from "../routes/routes";
+import { ROUTES } from "../routes/routes";
 
 /**
  * Handle incrementing product quantity
@@ -46,4 +47,13 @@ export const handleImageClick = (navigate, productId) => {
   if (productId) {
     navigate(getProductRoute(productId));
   }
+};
+
+/* ---------- ADMIN HANDLERS ---------- */
+
+export const handleAdminEditClick = (event, navigate, productId) => {
+  event.stopPropagation(); // 🚫 prevent image/card click
+  if (!productId) return;
+
+  navigate(ROUTES.PRODUCT_FORM);
 };

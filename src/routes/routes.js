@@ -8,6 +8,7 @@ export const ROUTES = {
   SIGNUP: "/signup",
   PROFILE: "/profile",
   ADMIN: "/admin",
+  PRODUCT_FORM: "/product-form",
 };
 
 /**

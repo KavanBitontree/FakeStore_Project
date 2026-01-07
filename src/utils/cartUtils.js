@@ -1,11 +1,6 @@
 // Cart utility functions for localStorage management with API integration
 
-import {
-  createCart,
-  updateCart,
-  deleteCart,
-  getCartById,
-} from "../services/cart.api";
+import { createCart, updateCart, deleteCart } from "../services/cart.api";
 
 const CART_STORAGE_KEY = "fakeStore_cart";
 const CART_ID_STORAGE_KEY = "fakeStore_cartId";
@@ -311,7 +306,6 @@ export const clearCart = async (userId = null) => {
   // 🔹 clear local cart AFTER api
   saveCartItems([]);
 };
-
 
 /**
  * Clear cart data on logout

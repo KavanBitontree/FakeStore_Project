@@ -2,15 +2,16 @@
 @use "../../styles/mixins.scss" as m;
 
 .border-div {
-  padding: 10px;
   width: 100%;
   flex: 1;
-  @include m.flex-column;
   min-height: 0;
-  box-shadow: 0 2px 15px rgba(255, 107, 53, 0.2),
-    0 0 30px rgba(255, 107, 53, 0.15);
   box-sizing: border-box;
   overflow-x: hidden;
+
+  padding: v.$spacing-xs;
+
+  @include m.flex-column;
+  @include m.shadow-md;
 
   @include m.tablet {
     padding: 0;
@@ -18,22 +19,21 @@
 
   @include m.mobile {
     padding: 0;
-    overflow-x: hidden;
   }
 }
 
 .border {
-  @include m.flex-column;
-  @include m.animated-border(); // Using the mixin!
   width: 100%;
   height: 100%;
   flex: 1;
-  position: relative;
-  padding: v.$spacing-md;
-  box-sizing: border-box;
   min-height: 0;
-  max-width: 100%;
+  box-sizing: border-box;
   overflow-x: hidden;
+
+  padding: v.$spacing-md;
+
+  @include m.flex-column;
+  @include m.animated-border;
 
   @include m.tablet {
     padding: v.$spacing-sm;
@@ -41,17 +41,73 @@
 
   @include m.mobile {
     padding: v.$spacing-xs;
-    max-width: 100%;
-    overflow-x: hidden;
   }
 }
 
+/* 🔹 TOOLBAR (Filter + Add Product) */
+.products-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-md;
+  width: 100%;
+  margin-bottom: v.$spacing-lg;
+
+  @include m.tablet {
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-md;
+  }
+
+  @include m.mobile {
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-sm;
+  }
+
+  // Add Product button styling
+  .auth-button {
+    align-self: flex-end;
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    padding: 10px 24px;
+    border-radius: v.$radius-sm;
+
+    background-color: v.$orange;
+    color: v.$dark-bg;
+
+    font-size: v.$font-size-sm;
+    font-weight: v.$font-weight-bold;
+
+    @include m.button-base;
+    @include m.shadow-sm;
+
+    &:hover:not(:disabled) {
+      background-color: v.$orange-dark;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    @include m.tablet {
+      align-self: stretch;
+    }
+
+    @include m.mobile {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+/* 🔹 PRODUCTS GRID */
 .products-grid {
+  width: 100%;
+  box-sizing: border-box;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: v.$spacing-md;
-  width: 100%;
-  box-sizing: border-box;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -66,8 +122,5 @@
   @include m.mobile {
     grid-template-columns: 1fr;
     gap: v.$spacing-xs;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
   }
 }
