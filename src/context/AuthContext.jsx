@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { clearCartOnLogout } from "../utils/cartUtils";
 
 const AuthContext = createContext(null);
 
@@ -30,6 +31,9 @@ export const AuthProvider = ({ children }) => {
     setUserId(null);
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+
+    // Clear cart data on logout
+    clearCartOnLogout();
   };
 
   return (
