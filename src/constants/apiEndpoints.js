@@ -13,4 +13,8 @@ export const API_ENDPOINTS = {
     ROOT: "/users",
     BY_ID: (id) => `/users/${id}`,
   },
+  CARTS: {
+    ROOT: "/carts",
+    BY_ID: (id) => `/carts/${id}`,
+  },
 };

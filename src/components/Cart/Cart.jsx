@@ -11,7 +11,7 @@ const CartMain = () => {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, userId, loading: authLoading } = useAuth();
 
   useEffect(() => {
     loadCart();
@@ -28,10 +28,17 @@ const CartMain = () => {
     setCartItems(items);
   };
 
-  const handleClearCart = () => {
+  const handleClearCart = async () => {
     if (window.confirm("Are you sure you want to clear your entire cart?")) {
-      clearCart();
-      setCartItems([]);
+      try {
+        // Pass userId if authenticated
+        await clearCart(isAuthenticated ? userId : null);
+        setCartItems([]);
+      } catch (error) {
+        console.error("Error clearing cart:", error);
+        // Still clear local cart even if API fails
+        setCartItems([]);
+      }
     }
   };
 

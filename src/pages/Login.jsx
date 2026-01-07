@@ -7,6 +7,7 @@ import { fetchAllUsers } from "../services/user.api";
 import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
 import { LoginSchema } from "../schemas/login";
+import { syncCartAfterLogin } from "../utils/cartUtils";
 
 import "./Login.scss";
 
@@ -44,7 +45,10 @@ const Login = () => {
       // 4️⃣ Store token + userId ONLY
       login(authResponse.token, matchedUser.id);
 
-      // 5️⃣ Redirect
+      // 5️⃣ Sync cart after successful login
+      await syncCartAfterLogin(matchedUser.id, matchedUser);
+
+      // 6️⃣ Redirect
       navigate(ROUTES.HOME);
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");

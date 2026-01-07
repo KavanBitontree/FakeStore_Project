@@ -2,7 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ShoppingCart, User } from "lucide-react";
 
-import { getCartItemCount, getCartTotal } from "../../../utils/cartUtils";
+import {
+  getCartItemCount,
+  getCartTotal,
+  getCartItems,
+  syncCartWithAPI,
+} from "../../../utils/cartUtils";
+
 import { useAuth } from "../../../context/AuthContext";
 import { ROUTES } from "../../../routes/routes";
 
@@ -17,7 +23,7 @@ export default function Navbar({ onSearch }) {
 
   const navigate = useNavigate();
   const location = useLocation(); // 🔹 detect current path
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, userId } = useAuth();
 
   /* ---------- Scroll ---------- */
   const handleScroll = useCallback(() => {
@@ -48,7 +54,19 @@ export default function Navbar({ onSearch }) {
     logout();
     navigate(ROUTES.LOGIN);
   };
-  const handleCart = () => navigate(ROUTES.CART);
+  const handleCart = async () => {
+    // 🔹 dummy update call on cart visit
+    if (isAuthenticated && userId) {
+      try {
+        const items = getCartItems();
+        await syncCartWithAPI(userId, items);
+      } catch (err) {
+        console.error("Dummy cart update failed:", err);
+      }
+    }
+
+    navigate(ROUTES.CART);
+  };
 
   const isCartEmpty = cartCount === 0;
 
@@ -103,7 +121,7 @@ export default function Navbar({ onSearch }) {
 
           {!isCartEmpty && (
             <span className="cart-badge">
-              {cartCount} · ₹{cartTotal.toFixed(2)}
+              {cartCount} · ${cartTotal.toFixed(2)}
             </span>
           )}
         </button>
