@@ -7,7 +7,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Admin from "./pages/Admin";
 import { ROUTES } from "./routes/routes";
+import { ROLES } from "./constants/roles";
 
 // Component to scroll to top on route change
 function ScrollToTop() {
@@ -35,6 +37,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.ADMIN}
+          element={
+            <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+              <Admin />
             </ProtectedRoute>
           }
         />

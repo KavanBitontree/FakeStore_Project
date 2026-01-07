@@ -7,6 +7,7 @@ export const ROUTES = {
   LOGIN: "/login",
   SIGNUP: "/signup",
   PROFILE: "/profile",
+  ADMIN: "/admin",
 };
 
 /**

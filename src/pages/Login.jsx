@@ -8,25 +8,42 @@ import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
 import { LoginSchema } from "../schemas/login";
 import { syncCartAfterLogin } from "../utils/cartUtils";
+import { ROLES } from "../constants/roles";
+import { ADMIN_CREDENTIALS } from "../constants/admin";
 
 import "./Login.scss";
 
 const Login = () => {
   const [error, setError] = useState("");
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, role } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isAuthenticated) return;
+
+    if (role === ROLES.ADMIN) {
+      navigate(ROUTES.ADMIN, { replace: true });
+    } else {
       navigate(ROUTES.HOME, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, role, navigate]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       setError("");
 
+      // ================= ADMIN LOGIN =================
+      if (
+        values.username === ADMIN_CREDENTIALS.username &&
+        values.password === ADMIN_CREDENTIALS.password
+      ) {
+        login("admin-token", ADMIN_CREDENTIALS.id, ROLES.ADMIN);
+        navigate(ROUTES.ADMIN);
+        return;
+      }
+
+      // ================= USER LOGIN =================
       // 1️⃣ Authenticate (returns token only)
       const authResponse = await loginUser(values.username, values.password);
 
@@ -42,13 +59,13 @@ const Login = () => {
         throw new Error("User not found");
       }
 
-      // 4️⃣ Store token + userId ONLY
-      login(authResponse.token, matchedUser.id);
+      // 4️⃣ Store token + userId + role
+      login(authResponse.token, matchedUser.id, ROLES.USER);
 
       // 5️⃣ Sync cart after successful login
       await syncCartAfterLogin(matchedUser.id, matchedUser);
 
-      // 6️⃣ Redirect
+      // 6️⃣ Redirect user
       navigate(ROUTES.HOME);
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
