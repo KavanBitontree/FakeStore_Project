@@ -70,6 +70,19 @@
   }
 }
 
+.nav-button--icon {
+  padding: 10px;
+  border-color: v.$orange;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(255, 107, 53, 0.15);
+  }
+}
+
 .logo-highlight {
   color: v.$orange;
 }

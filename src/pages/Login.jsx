@@ -1,22 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useAuth } from "../context/AuthContext";
+
 import { loginUser } from "../services/auth.api";
+import { fetchAllUsers } from "../services/user.api";
+import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
 import { LoginSchema } from "../schemas/login";
+
 import "./Login.scss";
 
 const Login = () => {
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(ROUTES.HOME, { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       setError("");
-      const data = await loginUser(values.username, values.password);
-      login(data.token, { username: values.username });
+
+      // 1️⃣ Authenticate (returns token only)
+      const authResponse = await loginUser(values.username, values.password);
+
+      // 2️⃣ Fetch all users (FakeStore limitation)
+      const users = await fetchAllUsers();
+
+      // 3️⃣ Find logged-in user
+      const matchedUser = users.find(
+        (user) => user.username === values.username
+      );
+
+      if (!matchedUser) {
+        throw new Error("User not found");
+      }
+
+      // 4️⃣ Store token + userId ONLY
+      login(authResponse.token, matchedUser.id);
+
+      // 5️⃣ Redirect
       navigate(ROUTES.HOME);
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
@@ -24,6 +52,11 @@ const Login = () => {
       setSubmitting(false);
     }
   };
+
+  // Don't render login form if already authenticated
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="login-page-wrapper">
@@ -45,8 +78,11 @@ const Login = () => {
               {({ isSubmitting }) => (
                 <Form className="auth-form">
                   <div className="form-group">
-                    <label className="form-label">Username</label>
+                    <label htmlFor="username" className="form-label">
+                      Username
+                    </label>
                     <Field
+                      id="username"
                       name="username"
                       className="form-input"
                       placeholder="Enter username"
@@ -59,8 +95,11 @@ const Login = () => {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Password</label>
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
                     <Field
+                      id="password"
                       type="password"
                       name="password"
                       className="form-input"
@@ -86,7 +125,7 @@ const Login = () => {
 
             <div className="auth-footer">
               <p className="auth-link-text">
-                Don’t have an account?{" "}
+                Don't have an account?{" "}
                 <Link to={ROUTES.SIGNUP} className="auth-link">
                   Sign up
                 </Link>

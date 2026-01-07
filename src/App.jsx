@@ -5,6 +5,8 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { ROUTES } from "./routes/routes";
 
 // Component to scroll to top on route change
@@ -28,6 +30,14 @@ function App() {
         <Route path={ROUTES.CART} element={<Cart />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.SIGNUP} element={<Signup />} />
+        <Route
+          path={ROUTES.PROFILE}
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </main>
   );
