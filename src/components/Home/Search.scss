@@ -31,10 +31,18 @@
   }
 
   @include m.mobile {
-    height: 42px;
-    gap: 8px;
-    padding: 0 10px;
+    max-width: 100%; // Ensure it doesn't overflow
+    height: 40px;
+    gap: 6px;
+    padding: 0 8px;
     border-width: 1px;
+  }
+
+  // Additional handling for zoom levels
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+    min-width: 0; // Allow shrinking
   }
 }
 
@@ -50,9 +58,14 @@
     fill: v.$orange;
     opacity: 0.9;
 
-    @include m.mobile {
+    @include m.tablet {
       width: 18px;
       height: 18px;
+    }
+
+    @include m.mobile {
+      width: 16px;
+      height: 16px;
     }
   }
 }
@@ -75,8 +88,17 @@
     opacity: 0.8;
   }
 
+  @include m.tablet {
+    font-size: 13px;
+  }
+
   @include m.mobile {
-    font-size: v.$font-size-xs;
+    font-size: 12px;
+  }
+
+  // Adjust for zoom levels
+  @media (max-width: 768px) {
+    font-size: 12px;
   }
 }
 
@@ -106,6 +128,12 @@
 
   &:active {
     transform: scale(0.9);
+  }
+
+  @include m.tablet {
+    width: 22px;
+    height: 22px;
+    font-size: v.$font-size-base;
   }
 
   @include m.mobile {
