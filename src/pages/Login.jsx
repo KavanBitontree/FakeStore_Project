@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import { loginUser } from "../services/auth.api";
@@ -17,6 +17,10 @@ const Login = () => {
   const [error, setError] = useState("");
   const { login, isAuthenticated, role } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the redirect location from state, default to HOME
+  const from = location.state?.from || ROUTES.HOME;
 
   // Redirect if already logged in
   useEffect(() => {
@@ -25,9 +29,10 @@ const Login = () => {
     if (role === ROLES.ADMIN) {
       navigate(ROUTES.ADMIN, { replace: true });
     } else {
-      navigate(ROUTES.HOME, { replace: true });
+      // Use the 'from' location for regular users
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, role, navigate]);
+  }, [isAuthenticated, role, navigate, from]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -65,8 +70,8 @@ const Login = () => {
       // 5️⃣ Sync cart after successful login
       await syncCartAfterLogin(matchedUser.id, matchedUser);
 
-      // 6️⃣ Redirect user
-      navigate(ROUTES.HOME);
+      // 6️⃣ Redirect to intended page (from state or default to HOME)
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
     } finally {
@@ -147,7 +152,7 @@ const Login = () => {
             <div className="auth-footer">
               <p className="auth-link-text">
                 Don't have an account?{" "}
-                <Link to={ROUTES.SIGNUP} className="auth-link">
+                <Link to={ROUTES.SIGNUP} className="auth-link" state={{ from }}>
                   Sign up
                 </Link>
               </p>

@@ -30,6 +30,8 @@ const ProductCard = ({
 
   const { role } = useAuth();
   const isAdmin = role === ROLES.ADMIN;
+  const canAddToCart = !isAdmin;
+
   const MAX_STOCK = 10;
 
   /* ---------- Load cart quantity ---------- */
@@ -179,27 +181,30 @@ const ProductCard = ({
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
 
-          {quantity === 0 ? (
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              Add
-            </button>
-          ) : (
-            <div className="quantity-controls">
-              <button
-                className="quantity-btn quantity-btn--decrement"
-                onClick={() => handleDecrement(product, quantity, setQuantity)}
-              >
-                -
+          {canAddToCart &&
+            (quantity === 0 ? (
+              <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                Add
               </button>
-              <span className="quantity-display">{quantity}</span>
-              <button
-                className="quantity-btn quantity-btn--increment"
-                onClick={handleIncrementWithStock}
-              >
-                +
-              </button>
-            </div>
-          )}
+            ) : (
+              <div className="quantity-controls">
+                <button
+                  className="quantity-btn quantity-btn--decrement"
+                  onClick={() =>
+                    handleDecrement(product, quantity, setQuantity)
+                  }
+                >
+                  -
+                </button>
+                <span className="quantity-display">{quantity}</span>
+                <button
+                  className="quantity-btn quantity-btn--increment"
+                  onClick={handleIncrementWithStock}
+                >
+                  +
+                </button>
+              </div>
+            ))}
         </div>
       </div>
     </div>

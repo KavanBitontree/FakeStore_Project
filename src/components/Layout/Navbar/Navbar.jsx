@@ -60,7 +60,8 @@ export default function Navbar({ onSearch }) {
     navigate(isAdmin ? ROUTES.ADMIN : ROUTES.HOME);
   };
 
-  const handleLogin = () => navigate(ROUTES.LOGIN);
+  const handleLogin = () =>
+    navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
   const handleProfile = () => navigate(ROUTES.PROFILE);
   const handleUsers = () => navigate(ROUTES.USERS);
   const handleProducts = () => navigate(ROUTES.ADMIN);
@@ -86,9 +87,13 @@ export default function Navbar({ onSearch }) {
   /* ---------- UI Flags ---------- */
   const isCartEmpty = cartCount === 0;
 
-  const hideSearchRoutes = [ROUTES.CART, ROUTES.PRODUCT_DETAIL, ROUTES.PROFILE];
+  const hideSearchBar =
+    location.pathname === ROUTES.USERS ||
+    location.pathname === ROUTES.CART ||
+    location.pathname === ROUTES.PROFILE ||
+    location.pathname.startsWith(ROUTES.PRODUCT_DETAIL.replace(":id", ""));
 
-  const showSearchBar = !hideSearchRoutes.includes(location.pathname);
+  const showSearchBar = !hideSearchBar;
 
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
@@ -175,9 +180,10 @@ export default function Navbar({ onSearch }) {
             className="nav-button nav-button--cart"
             disabled={isCartEmpty}
             onClick={handleCart}
+            aria-label="Cart"
           >
             <ShoppingCart size={18} />
-            <span>MyCart</span>
+            <span className="cart-text">MyCart</span>
 
             {!isCartEmpty && (
               <span className="cart-badge">

@@ -195,6 +195,23 @@
     border-color: v.$orange;
     position: relative;
     gap: 6px;
+
+    @include m.tablet {
+      // Hide "MyCart" text on tablet
+      .cart-text {
+        display: none;
+      }
+    }
+
+    @include m.mobile {
+      padding: 8px 10px;
+      gap: 4px;
+
+      // Hide "MyCart" text on mobile
+      .cart-text {
+        display: none;
+      }
+    }
   }
 
   &--icon {
@@ -238,17 +255,6 @@
     &--login {
       padding: 8px 12px;
     }
-
-    // Show full cart button on mobile (not just icon)
-    &--cart {
-      padding: 8px 12px;
-      gap: 4px;
-
-      span:not(.cart-badge) {
-        display: inline; // Show "MyCart" text
-        font-size: v.$font-size-xs;
-      }
-    }
   }
 }
 
@@ -256,6 +262,19 @@
 .button-label {
   @include m.tablet {
     font-size: v.$font-size-xs;
+  }
+
+  @include m.mobile {
+    display: none;
+  }
+}
+
+/* Cart Text */
+.cart-text {
+  display: inline;
+
+  @include m.tablet {
+    display: none;
   }
 
   @include m.mobile {
@@ -276,8 +295,9 @@
   white-space: nowrap;
 
   @include m.tablet {
-    font-size: 11px;
-    padding: 2px 5px;
+    font-size: 10px;
+    padding: 2px 4px;
+    margin-left: 3px;
   }
 
   @include m.mobile {

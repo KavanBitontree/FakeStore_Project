@@ -6,24 +6,34 @@
   @include m.flex-column;
 }
 
+/* DEFAULT: Pages WITH search */
 .main-content {
   flex: 1;
   @include m.flex-column;
-  min-height: calc(100vh - v.$navbar-height-desktop);
-  padding-top: 0;
   width: 100%;
   overflow-x: hidden;
+
+  min-height: calc(100vh - v.$navbar-height-desktop);
 
   @include m.tablet {
     min-height: calc(100vh - v.$navbar-height-mobile);
   }
 
   @include m.mobile {
-    min-height: calc(100vh - v.$navbar-height-mobile-wrapped);
-    overflow-x: hidden;
+    @include m.navbar-offset(true);
   }
 }
 
+/* Pages WITHOUT search */
+.page-wrapper.no-search {
+  .main-content {
+    @include m.mobile {
+      @include m.navbar-offset(false);
+    }
+  }
+}
+
+/* Navbar spacer */
 .navbar-spacer {
   height: v.$navbar-height-desktop;
   flex-shrink: 0;
@@ -34,5 +44,14 @@
 
   @include m.mobile {
     height: v.$navbar-height-mobile-wrapped;
+  }
+}
+
+/* Spacer fix when search is hidden */
+.page-wrapper.no-search {
+  .navbar-spacer {
+    @include m.mobile {
+      height: v.$navbar-height-mobile-no-search;
+    }
   }
 }
