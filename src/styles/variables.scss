@@ -90,7 +90,10 @@ $z-index-popover: 500;
 $z-index-tooltip: 600;
 $z-index-navbar: 1000;
 
-// Navbar
+// Navbar Heights
 $navbar-height-desktop: 96px;
 $navbar-height-mobile: 72px;
 $navbar-height: $navbar-height-desktop;
+
+// Navbar wrapped height (when search wraps on mobile)
+$navbar-height-mobile-wrapped: 130px;

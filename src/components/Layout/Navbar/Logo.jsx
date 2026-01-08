@@ -6,15 +6,10 @@ export default function Logo() {
         viewBox="0 0 280 280"
         className="logo-svg"
         xmlns="http://www.w3.org/2000/svg"
+        pointerEvents="none"
       >
         <defs>
-          <filter
-            id="boldShadow"
-            x="-50%"
-            y="-50%"
-            width="200%"
-            height="200%"
-          >
+          <filter id="boldShadow" x="-50%" y="-50%" width="200%" height="200%">
             <feDropShadow
               dx="0"
               dy="4"

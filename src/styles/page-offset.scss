@@ -19,7 +19,7 @@
   }
 
   @include m.mobile {
-    min-height: calc(100vh - v.$navbar-height-mobile);
+    min-height: calc(100vh - v.$navbar-height-mobile-wrapped);
     overflow-x: hidden;
   }
 }
@@ -33,6 +33,6 @@
   }
 
   @include m.mobile {
-    height: v.$navbar-height-mobile;
+    height: v.$navbar-height-mobile-wrapped;
   }
 }

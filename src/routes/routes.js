@@ -9,6 +9,7 @@ export const ROUTES = {
   PROFILE: "/profile",
   ADMIN: "/admin",
   PRODUCT_FORM: "/product-form",
+  USERS: "/admin/users",
 };
 
 /**
