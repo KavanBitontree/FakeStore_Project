@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Admin from "./pages/Admin";
 import ProductForm from "./pages/ProductForm";
+import Users from "./pages/Users";
 import { ROUTES } from "./routes/routes";
 import { ROLES } from "./constants/roles";
 
@@ -54,6 +55,14 @@ function App() {
           element={
             <ProtectedRoute allowedRole={ROLES.ADMIN}>
               <ProductForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.USERS}
+          element={
+            <ProtectedRoute allowedRole={ROLES.ADMIN}>
+              <Users />
             </ProtectedRoute>
           }
         />

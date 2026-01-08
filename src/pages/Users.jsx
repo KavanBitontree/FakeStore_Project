@@ -26,7 +26,7 @@ const Users = () => {
 
   if (loading) {
     return (
-      <div className="page-wrapper">
+      <div className="page-wrapper no-search">
         <Navbar />
         <main className="main-content">
           <div className="navbar-spacer" />
@@ -53,7 +53,7 @@ const Users = () => {
   }
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper no-search">
       <Navbar />
       <main className="main-content">
         <div className="navbar-spacer" />

@@ -1,7 +1,5 @@
 @use "./variables.scss" as v;
 
-// Common Mixins
-
 // Media Query Mixins
 @mixin tablet {
   @media (max-width: v.$tablet) {
@@ -133,14 +131,23 @@
   animation: linearGradientMove $animation-speed linear infinite;
 }
 
-// Keyframe for animated border (include once globally)
+// Navbar offset handler (FIXED — no deprecated if())
+@mixin navbar-offset($has-search: true) {
+  @if $has-search {
+    min-height: calc(100vh - v.$navbar-height-mobile-wrapped);
+  } @else {
+    min-height: calc(100vh - v.$navbar-height-mobile-no-search);
+  }
+}
+
+// Keyframes
 @keyframes linearGradientMove {
   100% {
     background-position: 6px 0, -6px 100%, 0 -6px, 100% 6px;
   }
 }
 
-// Reusable error box / text
+// Error box
 @mixin error-box(
   $bg: rgba(255, 0, 0, 0.15),
   $border: v.$orange,
@@ -164,7 +171,7 @@
   }
 }
 
-// Inline error for form fields
+// Inline error
 @mixin error-text($color: #ff2222, $font-size: v.$font-size-xs) {
   color: $color;
   font-size: $font-size;

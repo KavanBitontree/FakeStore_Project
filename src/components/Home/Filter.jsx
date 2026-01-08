@@ -5,6 +5,7 @@ const Filter = ({ products, onFilterChange }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [maxPrice, setMaxPrice] = useState(1000);
+  const [sortBy, setSortBy] = useState("default");
 
   // Get unique categories and max price from products
   useEffect(() => {
@@ -20,30 +21,54 @@ const Filter = ({ products, onFilterChange }) => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    applyFilters(category, priceRange);
+    applyFilters(category, priceRange, sortBy);
   };
 
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
     const newRange = [0, value];
     setPriceRange(newRange);
-    applyFilters(selectedCategory, newRange);
+    applyFilters(selectedCategory, newRange, sortBy);
   };
 
-  const applyFilters = (category, range) => {
-    const filtered = products.filter((product) => {
+  const handleSortChange = (e) => {
+    const newSort = e.target.value;
+    setSortBy(newSort);
+    applyFilters(selectedCategory, priceRange, newSort);
+  };
+
+  const applyFilters = (category, range, sort) => {
+    // First, filter by category and price
+    let filtered = products.filter((product) => {
       const categoryMatch = category === "all" || product.category === category;
       const priceMatch = product.price >= range[0] && product.price <= range[1];
       return categoryMatch && priceMatch;
     });
+
+    // Then, apply sorting
+    if (sort === "name-asc") {
+      filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sort === "name-desc") {
+      filtered = [...filtered].sort((a, b) => b.title.localeCompare(a.title));
+    } else if (sort === "price-asc") {
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
+    } else if (sort === "price-desc") {
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
+    }
+    // "default" means no sorting applied
+
     onFilterChange(filtered);
   };
 
   const handleReset = () => {
     setSelectedCategory("all");
     setPriceRange([0, maxPrice]);
+    setSortBy("default");
     onFilterChange(products);
   };
+
+  // Calculate percentage for slider gradient
+  const sliderPercentage = ((priceRange[1] - 0) / (maxPrice - 0)) * 100;
 
   return (
     <div className="filter-container">
@@ -72,6 +97,21 @@ const Filter = ({ products, onFilterChange }) => {
       </div>
 
       <div className="filter-section">
+        <label className="filter-label">Sort By</label>
+        <select
+          value={sortBy}
+          onChange={handleSortChange}
+          className="sort-select"
+        >
+          <option value="default">Default</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+      </div>
+
+      <div className="filter-section">
         <label className="filter-label">
           Price Range: ${priceRange[0]} - ${priceRange[1]}
         </label>
@@ -82,6 +122,9 @@ const Filter = ({ products, onFilterChange }) => {
           value={priceRange[1]}
           onChange={handlePriceChange}
           className="price-slider"
+          style={{
+            background: `linear-gradient(to right, #ff6b35 0%, #ff6b35 ${sliderPercentage}%, #666 ${sliderPercentage}%, #666 100%)`,
+          }}
         />
         <div className="price-labels">
           <span>$0</span>

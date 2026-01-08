@@ -33,7 +33,7 @@ const Product = () => {
   }, [id]);
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper no-search">
       <Navbar />
 
       <main className="main-content">

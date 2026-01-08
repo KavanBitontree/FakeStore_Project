@@ -13,7 +13,7 @@ $gray-light: #e0e0e0;
 $gray: #999999;
 
 // Typography - Use system font as fallback for faster rendering
-$font-main: "Rock Salt", cursive;
+$font-main: "Comic Sans MS", "Comic Sans", sans-serif;
 
 // Font Sizes
 $font-size-xs: 0.75rem; // 12px
@@ -90,7 +90,11 @@ $z-index-popover: 500;
 $z-index-tooltip: 600;
 $z-index-navbar: 1000;
 
-// Navbar
+// Navbar Heights
 $navbar-height-desktop: 96px;
 $navbar-height-mobile: 72px;
 $navbar-height: $navbar-height-desktop;
+
+// Navbar wrapped height (when search wraps on mobile)
+$navbar-height-mobile-wrapped: 130px;
+$navbar-height-mobile-no-search: 72px;

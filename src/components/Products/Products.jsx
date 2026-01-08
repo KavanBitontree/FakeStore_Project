@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Products.scss";
 
 import ProductCard from "./ProductCard";
-import ProductForm from "../../pages/ProductForm";
 import Filter from "../Home/Filter";
 import Pagination from "../Pagination/Pagination";
 import { getProducts } from "../../services/products.api";
@@ -24,7 +23,6 @@ const Products = ({ searchQuery = "" }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [editingProduct, setEditingProduct] = useState(null);
 
   const { role } = useAuth();
   const navigate = useNavigate();
@@ -94,17 +92,12 @@ const Products = ({ searchQuery = "" }) => {
     return searchedProducts.slice(start, start + ITEMS_PER_PAGE);
   }, [searchedProducts, currentPage]);
 
-  // ------------------ RENDER ------------------
-  if (editingProduct) {
-    return (
-      <ProductForm
-        mode="Edit"
-        initialValues={editingProduct}
-        onDone={() => setEditingProduct(null)}
-      />
-    );
-  }
+  // Handle edit - navigate to form with product data
+  const handleEdit = (product) => {
+    navigate(ROUTES.PRODUCT_FORM, { state: { product, mode: "Edit" } });
+  };
 
+  // ------------------ RENDER ------------------
   return (
     <div className="border-div">
       <div className="border">
@@ -119,9 +112,7 @@ const Products = ({ searchQuery = "" }) => {
               {isAdmin && (
                 <button
                   className="auth-button"
-                  onClick={() =>
-                    setEditingProduct(null) || navigate(ROUTES.PRODUCT_FORM)
-                  }
+                  onClick={() => navigate(ROUTES.PRODUCT_FORM)}
                 >
                   + Add Product
                 </button>
@@ -138,7 +129,7 @@ const Products = ({ searchQuery = "" }) => {
                       key={product.id}
                       product={product}
                       disableNavigation={isAdmin}
-                      onEdit={() => setEditingProduct(product)} // Pass edit handler
+                      onEdit={() => handleEdit(product)}
                     />
                   ))}
                 </div>
