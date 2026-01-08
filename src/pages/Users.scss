@@ -1,0 +1,166 @@
+@use "../styles/variables.scss" as v;
+@use "../styles/mixins.scss" as m;
+
+/* Users Container */
+.users-container {
+  padding: v.$spacing-md;
+  color: v.$white;
+  font-family: v.$font-main;
+
+  @include m.tablet {
+    padding: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-sm v.$spacing-xs;
+  }
+}
+
+/* Users Title */
+.users-title {
+  font-size: v.$h2-size;
+  margin-bottom: v.$spacing-md;
+  color: v.$orange;
+  text-shadow: v.$shadow-glow;
+  margin-top: 0;
+
+  @include m.tablet {
+    font-size: v.$h3-size;
+    margin-bottom: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    font-size: v.$h4-size;
+    margin-bottom: v.$spacing-sm;
+  }
+}
+
+/* Grid layout */
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: v.$spacing-md;
+
+  @include m.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: v.$spacing-sm;
+  }
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+    gap: v.$spacing-xs;
+  }
+}
+
+/* User Card */
+.user-card {
+  background-color: v.$dark-surface;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-md;
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  border: v.$dotted-border;
+  box-shadow: v.$shadow-md;
+  transition: transform v.$transition-fast v.$transition-ease,
+    box-shadow v.$transition-fast v.$transition-ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: v.$shadow-lg;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-sm;
+  }
+}
+
+/* Avatar Circle */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: v.$radius-full;
+  background: linear-gradient(135deg, v.$orange, v.$orange-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: v.$font-size-md;
+  font-weight: v.$font-weight-bold;
+  color: v.$black;
+  box-shadow: v.$shadow-sm;
+  flex-shrink: 0;
+
+  @include m.mobile {
+    width: 40px;
+    height: 40px;
+    font-size: v.$font-size-sm;
+  }
+}
+
+/* User Info */
+.user-info {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    margin: 0;
+    font-size: v.$font-size-md;
+    color: v.$white;
+    line-height: v.$line-height-tight;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include m.mobile {
+      font-size: v.$font-size-sm;
+    }
+  }
+
+  p {
+    margin-top: 4px;
+    font-size: v.$font-size-sm;
+    color: v.$gray;
+    line-height: v.$line-height-normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include m.mobile {
+      font-size: v.$font-size-xs;
+    }
+  }
+}
+
+/* Loader */
+.loader {
+  margin-top: v.$spacing-lg;
+  text-align: center;
+  font-size: v.$font-size-md;
+  color: v.$orange-light;
+
+  @include m.tablet {
+    margin-top: v.$spacing-md;
+  }
+
+  @include m.mobile {
+    margin-top: v.$spacing-sm;
+    font-size: v.$font-size-sm;
+  }
+}
+
+/* Error */
+.error {
+  margin-top: v.$spacing-lg;
+  text-align: center;
+  font-size: v.$font-size-sm;
+  color: v.$orange-light;
+
+  @include m.tablet {
+    margin-top: v.$spacing-md;
+  }
+
+  @include m.mobile {
+    margin-top: v.$spacing-sm;
+    font-size: v.$font-size-xs;
+  }
+}
