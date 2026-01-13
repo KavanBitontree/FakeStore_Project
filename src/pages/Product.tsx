@@ -9,12 +9,14 @@ import { getProductById } from "../services/products.api";
 import "../styles/page-offset.scss";
 import "./Product.scss";
 
+import type { Product } from "../types/product";
+
 const Product = () => {
   const { id } = useParams();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -34,7 +36,7 @@ const Product = () => {
 
   return (
     <div className="page-wrapper no-search">
-      <Navbar />
+      <Navbar onSearch={null} />
 
       <main className="main-content">
         <div className="navbar-spacer" />

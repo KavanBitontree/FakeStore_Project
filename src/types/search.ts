@@ -6,7 +6,7 @@ type SearchIconProps = {
 };
 
 type SearchProps = {
-  onSearch: onSearch;
+  onSearch: onSearch | null;
   placeholder?: string;
 };
 

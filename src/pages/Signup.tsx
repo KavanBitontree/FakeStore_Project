@@ -6,17 +6,26 @@ import { ROUTES } from "../routes/routes";
 import { SignupSchema } from "../schemas/signup";
 import "./Login.scss";
 
+import type { User } from "../types/user";
+
 const Signup = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (
+    values: User,
+    { setSubmitting }: { setSubmitting: (val: boolean) => void }
+  ) => {
     try {
       setError("");
       await signupUser(values);
       navigate(ROUTES.LOGIN);
-    } catch (err) {
-      setError(err.message || "Signup failed. Please try again.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Signup failed. Please try again.");
+      } else {
+        setError("Signup failed. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }

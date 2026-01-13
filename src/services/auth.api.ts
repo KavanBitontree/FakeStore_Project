@@ -43,7 +43,7 @@ export const signupUser = async ({
   password,
 }: {
   username: string;
-  email: string;
+  email?: string;
   password: string;
 }) => {
   try {

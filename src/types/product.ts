@@ -1,5 +1,6 @@
 type Product = {
   id: number;
+  newCategory?: string;
   title: string;
   price: number;
   category: string;

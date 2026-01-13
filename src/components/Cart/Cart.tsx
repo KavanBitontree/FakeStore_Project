@@ -6,9 +6,11 @@ import { getCartItems, getCartTotal, clearCart } from "../../utils/cartUtils";
 import { useAuth } from "../../context/AuthContext";
 import { ROUTES } from "../../routes/routes";
 
+import type { CartItem } from "../../types/cart";
+
 const CartMain = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const { isAuthenticated, userId, loading: authLoading } = useAuth();

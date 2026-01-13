@@ -1,6 +1,16 @@
 import "./Pagination.scss";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+type PaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+};
+
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
   if (totalPages <= 1) return null;
 
   const handlePrevious = () => {
@@ -15,13 +25,13 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     }
   };
 
-  const handlePageClick = (page) => {
+  const handlePageClick = (page: number) => {
     onPageChange(page);
   };
 
   // Generate page numbers to display
-  const getPageNumbers = () => {
-    const pages = [];
+  const getPageNumbers = (): Array<number | "..."> => {
+    const pages: Array<number | "..."> = [];
     const maxVisible = 5;
 
     if (totalPages <= maxVisible) {

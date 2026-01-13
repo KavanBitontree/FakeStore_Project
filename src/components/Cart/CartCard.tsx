@@ -8,7 +8,9 @@ import {
 } from "../../utils/handlers";
 import "./CartCard.scss";
 
-const CartCard = ({ product }) => {
+import type { CartItem } from "../../types/cart";
+
+const CartCard = ({ product }: { product: CartItem }) => {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(product.quantity);
 

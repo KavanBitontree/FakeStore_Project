@@ -6,11 +6,13 @@ import { UserEditSchema } from "../schemas/user_edit";
 import Navbar from "../components/Layout/Navbar/Navbar";
 import "./Profile.scss";
 
+import type { User } from "../types/user";
+
 const Profile = () => {
   const { userId, isAuthenticated } = useAuth();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
 
   // Fetch user on mount
   useEffect(() => {
@@ -34,14 +36,14 @@ const Profile = () => {
   if (loading || !user)
     return (
       <>
-        <Navbar />
+        <Navbar onSearch={null} />
         <div className="profile-loader">Loading...</div>
       </>
     );
 
   return (
     <div className="page-wrapper no-search">
-      <Navbar />
+      <Navbar onSearch={null} />
       <main className="main-content profile-wrapper">
         <div className="navbar-spacer" />
 
@@ -55,7 +57,7 @@ const Profile = () => {
                 <h3>Personal Info</h3>
                 <p>
                   <span>Name</span>
-                  {user.name.firstname} {user.name.lastname}
+                  {user.name?.firstname} {user.name?.lastname}
                 </p>
                 <p>
                   <span>Username</span>
@@ -74,14 +76,14 @@ const Profile = () => {
               <section className="profile-section">
                 <h3>Address</h3>
                 <p>
-                  {user.address.number}, {user.address.street}
+                  {user.address?.number}, {user.address?.street}
                 </p>
                 <p>
-                  {user.address.city} - {user.address.zipcode}
+                  {user.address?.city} - {user.address?.zipcode}
                 </p>
                 <p className="geo">
-                  Lat: {user.address.geolocation.lat} | Long:{" "}
-                  {user.address.geolocation.long}
+                  Lat: {user.address?.geolocation?.lat} | Long:{" "}
+                  {user.address?.geolocation?.long}
                 </p>
               </section>
             </div>

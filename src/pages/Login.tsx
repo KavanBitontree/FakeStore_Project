@@ -13,8 +13,10 @@ import { ADMIN_CREDENTIALS } from "../constants/admin";
 
 import "./Login.scss";
 
+import type { User } from "../types/user";
+
 const Login = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const { login, isAuthenticated, role } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +36,10 @@ const Login = () => {
     }
   }, [isAuthenticated, role, navigate, from]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (
+    values: User,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
     try {
       setError("");
 
@@ -53,16 +58,18 @@ const Login = () => {
       const authResponse = await loginUser(values.username, values.password);
 
       // 2️⃣ Fetch all users (FakeStore limitation)
-      const users = await fetchAllUsers();
+      const users: User[] = await fetchAllUsers();
 
       // 3️⃣ Find logged-in user
       const matchedUser = users.find(
         (user) => user.username === values.username
       );
 
-      if (!matchedUser) {
+      if (!matchedUser || matchedUser.id === undefined) {
         throw new Error("User not found");
       }
+
+      login(authResponse.token, matchedUser.id, ROLES.USER);
 
       // 4️⃣ Store token + userId + role
       login(authResponse.token, matchedUser.id, ROLES.USER);
@@ -72,8 +79,12 @@ const Login = () => {
 
       // 6️⃣ Redirect to intended page (from state or default to HOME)
       navigate(from, { replace: true });
-    } catch (err) {
-      setError(err.message || "Login failed. Please try again.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        console.error("Login error:", err);
+      }
     } finally {
       setSubmitting(false);
     }

@@ -4,6 +4,7 @@ import { createCart, updateCart, deleteCart } from "../services/cart.api";
 
 import { CartItem } from "../types/cart";
 import { Product } from "../types/product";
+import type { User } from "../types/user";
 
 const CART_STORAGE_KEY = "fakeStore_cart";
 const CART_ID_STORAGE_KEY = "fakeStore_cartId";
@@ -79,7 +80,7 @@ export const clearCartId = () => {
  * @param {Object} user - User object (optional, for additional user data)
  * @returns {Promise<void>}
  */
-export const syncCartAfterLogin = async (userId: number, user = null) => {
+export const syncCartAfterLogin = async (userId: number, user: User | null) => {
   try {
     // Get local cart items (added before login)
     const localCartItems = getCartItems();
@@ -295,7 +296,7 @@ export const getCartItemCount = () => {
  * Clear entire cart
  * @param {number|null} userId - User ID (if authenticated)
  */
-export const clearCart = async (userId = null) => {
+export const clearCart = async (userId: number | null = null) => {
   if (userId) {
     const cartId = getCartId();
 

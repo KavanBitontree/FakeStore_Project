@@ -15,18 +15,27 @@ import { deleteProductFromStore } from "../../utils/productUtils";
 
 import { deleteProduct } from "../../services/products.api";
 
+import type { Product } from "../../types/product";
+
 import "./ProductCard.scss";
+
+type ProductCardProps = {
+  product: Product;
+  showFullDescription?: boolean;
+  disableNavigation?: boolean;
+  onEdit?: (product: Product) => void;
+};
 
 const ProductCard = ({
   product,
   showFullDescription,
   disableNavigation,
   onEdit,
-}) => {
+}: ProductCardProps) => {
   const navigate = useNavigate();
   const imgRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0);
 
   const { role } = useAuth();
   const isAdmin = role === ROLES.ADMIN;
@@ -84,13 +93,13 @@ const ProductCard = ({
   };
 
   /* ---------- Edit ---------- */
-  const handleEditClick = (e) => {
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onEdit) onEdit(product); // Call parent handler
   };
 
   /* ---------- Delete ---------- */
-  const handleDeleteClick = async (e) => {
+  const handleDeleteClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const confirmDelete = window.confirm(
       `Are you sure you want to delete "${product.title}"?`

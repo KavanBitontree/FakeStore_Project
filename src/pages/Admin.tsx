@@ -1,12 +1,9 @@
-import { useState } from "react";
-import Footer from "../components/Layout/Footer/Footer";
 import Navbar from "../components/Layout/Navbar/Navbar";
 import Products from "../components/Products/Products";
-import "../styles/page-offset.scss";
+import { useState } from "react";
 
-const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
+const Admin = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   return (
     <div className="page-wrapper">
       <Navbar onSearch={setSearchQuery} />
@@ -15,10 +12,8 @@ const Home = () => {
         <div className="navbar-spacer" />
         <Products searchQuery={searchQuery} />
       </main>
-
-      <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Admin;

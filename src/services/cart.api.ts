@@ -1,5 +1,7 @@
 import apiClient from "../config/api.config";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import type { CartItem } from "../types/cart";
+import type { Product } from "../types/product";
 
 /**
  * Create a new cart for the logged-in user
@@ -7,7 +9,7 @@ import { API_ENDPOINTS } from "../constants/apiEndpoints";
  * @param {Array} products - Array of full product objects from localStorage
  * @returns {Promise} API response with cartId
  */
-export const createCart = async (userId, products) => {
+export const createCart = async (userId: number, products: Product[]) => {
   try {
     const response = await apiClient.post(API_ENDPOINTS.CARTS.ROOT, {
       userId,
@@ -26,7 +28,7 @@ export const createCart = async (userId, products) => {
  * @param {number} cartId - Cart ID
  * @returns {Promise} Cart data with full product objects
  */
-export const getCartById = async (cartId) => {
+export const getCartById = async (cartId: number) => {
   try {
     const response = await apiClient.get(API_ENDPOINTS.CARTS.BY_ID(cartId));
     return response.data;
@@ -43,7 +45,11 @@ export const getCartById = async (cartId) => {
  * @param {Array} products - Array of full product objects
  * @returns {Promise} Updated cart data
  */
-export const updateCart = async (cartId, userId, products) => {
+export const updateCart = async (
+  cartId: number,
+  userId: number,
+  products: Product[]
+) => {
   try {
     const response = await apiClient.put(API_ENDPOINTS.CARTS.BY_ID(cartId), {
       userId,
@@ -62,7 +68,7 @@ export const updateCart = async (cartId, userId, products) => {
  * @param {number} cartId - Cart ID
  * @returns {Promise} Deletion response
  */
-export const deleteCart = async (cartId) => {
+export const deleteCart = async (cartId: number) => {
   try {
     const response = await apiClient.delete(API_ENDPOINTS.CARTS.BY_ID(cartId));
     return response.data;

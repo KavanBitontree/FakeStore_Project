@@ -15,14 +15,16 @@ import { useAuth } from "../../context/AuthContext";
 import { ROLES } from "../../constants/roles";
 import { ROUTES } from "../../routes/routes";
 
+import type { Product } from "../../types/product";
+
 const ITEMS_PER_PAGE = 6;
 
 const Products = ({ searchQuery = "" }) => {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { role } = useAuth();
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ const Products = ({ searchQuery = "" }) => {
   }, []);
 
   // Filter logic
-  const handleFilterChange = (filtered) => {
+  const handleFilterChange = (filtered: Product[]) => {
     setFilteredProducts(filtered);
     setCurrentPage(1);
   };
@@ -93,7 +95,7 @@ const Products = ({ searchQuery = "" }) => {
   }, [searchedProducts, currentPage]);
 
   // Handle edit - navigate to form with product data
-  const handleEdit = (product) => {
+  const handleEdit = (product: Product) => {
     navigate(ROUTES.PRODUCT_FORM, { state: { product, mode: "Edit" } });
   };
 

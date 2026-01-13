@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import type { Product } from "../types/product";
+
 import { createProduct, updateProduct } from "../services/products.api";
 import {
   addProductToStore,
@@ -16,8 +18,8 @@ import { ROUTES } from "../routes/routes";
 import "./Login.scss";
 
 const ProductForm = () => {
-  const [error, setError] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
   const [isNewCategory, setIsNewCategory] = useState(false);
 
   const navigate = useNavigate();
@@ -57,14 +59,23 @@ const ProductForm = () => {
     navigate(ROUTES.ADMIN);
   };
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (
+    values: Product,
+    {
+      setSubmitting,
+      resetForm,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      resetForm: ({ values }?: { values?: Product }) => void;
+    }
+  ) => {
     try {
       setError("");
 
       let finalCategory = "";
 
       if (isNewCategory) {
-        if (!values.newCategory.trim()) {
+        if (!values.newCategory?.trim()) {
           setError("New category is required");
           setSubmitting(false);
           return;

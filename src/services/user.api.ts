@@ -3,6 +3,8 @@
 import apiClient from "../config/api.config";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
 
+import type { User } from "../types/user";
+
 /**
  * Fetch all users
  * @returns {Promise<Array>}
@@ -21,8 +23,11 @@ export const fetchAllUsers = async () => {
  * @param {number} id
  * @returns {Promise<Object>}
  */
-export const fetchUserById = async (id) => {
+export const fetchUserById = async (id: number | null) => {
   try {
+    if (id === null) {
+      throw new Error("Invalid user ID");
+    }
     const res = await apiClient.get(API_ENDPOINTS.USERS.BY_ID(id));
     return res.data;
   } catch {
@@ -39,8 +44,11 @@ export const fetchUserById = async (id) => {
  * @param {string} userData.password - Password
  * @returns {Promise<Object>}
  */
-export const updateUser = async (id, userData) => {
+export const updateUser = async (id: number | null, userData: User) => {
   try {
+    if (id === null) {
+      throw new Error("Invalid user ID");
+    }
     const res = await apiClient.put(API_ENDPOINTS.USERS.BY_ID(id), {
       id,
       ...userData,

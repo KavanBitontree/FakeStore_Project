@@ -19,10 +19,10 @@ import "./Navbar.scss";
 
 import type { onSearch } from "../../../types/search";
 
-export default function Navbar({ onSearch }: { onSearch: onSearch }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+export default function Navbar({ onSearch }: { onSearch: onSearch | null }) {
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const [cartCount, setCartCount] = useState<number>(0);
+  const [cartTotal, setCartTotal] = useState<number>(0);
 
   const navigate = useNavigate();
   const location = useLocation();

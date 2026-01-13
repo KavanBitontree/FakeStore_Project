@@ -4,18 +4,24 @@ import Navbar from "../components/Layout/Navbar/Navbar";
 import "../styles/page-offset.scss";
 import "./Users.scss";
 
+import type { User } from "../types/user";
+
 const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const data = await fetchAllUsers();
         setUsers(data);
-      } catch (err) {
-        setError(err.message || "Something went wrong");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error("Unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }
@@ -27,7 +33,7 @@ const Users = () => {
   if (loading) {
     return (
       <div className="page-wrapper no-search">
-        <Navbar />
+        <Navbar onSearch={null} />
         <main className="main-content">
           <div className="navbar-spacer" />
           <div className="users-container">
@@ -41,7 +47,7 @@ const Users = () => {
   if (error) {
     return (
       <div className="page-wrapper">
-        <Navbar />
+        <Navbar onSearch={null} />
         <main className="main-content">
           <div className="navbar-spacer" />
           <div className="users-container">
@@ -54,7 +60,7 @@ const Users = () => {
 
   return (
     <div className="page-wrapper no-search">
-      <Navbar />
+      <Navbar onSearch={null} />
       <main className="main-content">
         <div className="navbar-spacer" />
         <div className="users-container">

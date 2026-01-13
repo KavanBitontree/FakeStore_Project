@@ -6,7 +6,7 @@ import "../styles/page-offset.scss";
 const Cart = () => {
   return (
     <div className="page-wrapper no-search">
-      <Navbar />
+      <Navbar onSearch={null} />
       <main className="main-content">
         <div className="navbar-spacer" />
         <CartMain />
