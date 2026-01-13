@@ -1,19 +1,20 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { clearCartOnLogout } from "../utils/cartUtils";
 import { ROLES } from "../constants/roles";
+import { AuthContextType } from "../types/authcontext";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(true);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [token, setToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUserId = localStorage.getItem("userId");
-    const storedRole = localStorage.getItem("role");
+    const storedRole = localStorage.getItem("role") as string | null;
 
     if (storedToken && storedUserId && storedRole) {
       setToken(storedToken);
@@ -23,13 +24,13 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (token, id, role = ROLES.USER) => {
+  const login = (token: string, id: number, role: string = ROLES.USER) => {
     setToken(token);
     setUserId(id);
     setRole(role);
 
     localStorage.setItem("token", token);
-    localStorage.setItem("userId", id);
+    localStorage.setItem("userId", String(id));
     localStorage.setItem("role", role);
   };
 
@@ -62,4 +63,12 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  return context;
+};

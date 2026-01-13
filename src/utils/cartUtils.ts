@@ -2,6 +2,9 @@
 
 import { createCart, updateCart, deleteCart } from "../services/cart.api";
 
+import { CartItem } from "../types/cart";
+import { Product } from "../types/product";
+
 const CART_STORAGE_KEY = "fakeStore_cart";
 const CART_ID_STORAGE_KEY = "fakeStore_cartId";
 
@@ -23,7 +26,7 @@ export const getCartItems = () => {
  * Save cart items to localStorage
  * @param {Array} items - Array of cart items
  */
-export const saveCartItems = (items) => {
+export const saveCartItems = (items: CartItem[]) => {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
     // Dispatch custom event for cart updates
@@ -51,7 +54,7 @@ export const getCartId = () => {
  * Save cart ID to localStorage
  * @param {number} cartId - Cart ID
  */
-export const saveCartId = (cartId) => {
+export const saveCartId = (cartId: number) => {
   try {
     localStorage.setItem(CART_ID_STORAGE_KEY, cartId.toString());
   } catch (error) {
@@ -76,7 +79,7 @@ export const clearCartId = () => {
  * @param {Object} user - User object (optional, for additional user data)
  * @returns {Promise<void>}
  */
-export const syncCartAfterLogin = async (userId, user = null) => {
+export const syncCartAfterLogin = async (userId: number, user = null) => {
   try {
     // Get local cart items (added before login)
     const localCartItems = getCartItems();
@@ -91,7 +94,7 @@ export const syncCartAfterLogin = async (userId, user = null) => {
         const { getCartById } = await import("../services/cart.api");
         const existingCart = await getCartById(existingCartId);
 
-        // FakeStore API returns products as {productId, quantity}
+        // FakeStore API returns products as {id, quantity}
         remoteCartItems = existingCart.products || [];
       } catch (error) {
         console.log("No existing cart found, will create new one");
@@ -103,9 +106,9 @@ export const syncCartAfterLogin = async (userId, user = null) => {
     const mergedItems = [...localCartItems];
 
     // Add remote items that aren't in local cart
-    remoteCartItems.forEach((remoteItem) => {
+    remoteCartItems.forEach((remoteItem: CartItem) => {
       const existingIndex = mergedItems.findIndex(
-        (item) => item.id === remoteItem.productId
+        (item) => item.id === remoteItem.id
       );
 
       if (existingIndex >= 0) {
@@ -115,7 +118,7 @@ export const syncCartAfterLogin = async (userId, user = null) => {
         // If item doesn't exist locally, add it with minimal info
         // Note: You may want to fetch full product details separately
         mergedItems.push({
-          id: remoteItem.productId,
+          id: remoteItem.id,
           quantity: remoteItem.quantity,
           // Add other fields from your product structure as needed
         });
@@ -152,7 +155,7 @@ export const syncCartAfterLogin = async (userId, user = null) => {
  * @param {Array} items - Cart items
  * @returns {Promise<void>}
  */
-export const syncCartWithAPI = async (userId, items) => {
+export const syncCartWithAPI = async (userId: number, items: CartItem[]) => {
   try {
     const cartId = getCartId();
 
@@ -176,10 +179,10 @@ export const syncCartWithAPI = async (userId, items) => {
  * @param {number|null} userId - User ID (if authenticated)
  * @returns {Array} Updated cart items
  */
-export const addToCart = async (product, userId = null) => {
+export const addToCart = async (product: Product, userId = null) => {
   const cartItems = getCartItems();
   const existingItemIndex = cartItems.findIndex(
-    (item) => item.id === product.id
+    (item: CartItem) => item.id === product.id
   );
 
   if (existingItemIndex >= 0) {
@@ -205,13 +208,13 @@ export const addToCart = async (product, userId = null) => {
 
 /**
  * Remove product from cart or decrement quantity
- * @param {number} productId - ID of product to remove
+ * @param {number} id - ID of product to remove
  * @param {number|null} userId - User ID (if authenticated)
  * @returns {Array} Updated cart items
  */
-export const removeFromCart = async (productId, userId = null) => {
+export const removeFromCart = async (id: number, userId = null) => {
   const cartItems = getCartItems();
-  const filteredItems = cartItems.filter((item) => item.id !== productId);
+  const filteredItems = cartItems.filter((item: CartItem) => item.id !== id);
   saveCartItems(filteredItems);
 
   // Sync with API if user is authenticated
@@ -224,22 +227,22 @@ export const removeFromCart = async (productId, userId = null) => {
 
 /**
  * Update product quantity in cart
- * @param {number} productId - ID of product
+ * @param {number} id - ID of product
  * @param {number} quantity - New quantity (0 to remove)
  * @param {number|null} userId - User ID (if authenticated)
  * @returns {Array} Updated cart items
  */
 export const updateCartQuantity = async (
-  productId,
-  quantity,
+  id: number,
+  quantity: number,
   userId = null
 ) => {
   if (quantity <= 0) {
-    return removeFromCart(productId, userId);
+    return removeFromCart(id, userId);
   }
 
   const cartItems = getCartItems();
-  const itemIndex = cartItems.findIndex((item) => item.id === productId);
+  const itemIndex = cartItems.findIndex((item: CartItem) => item.id === id);
 
   if (itemIndex >= 0) {
     cartItems[itemIndex].quantity = quantity;
@@ -256,12 +259,12 @@ export const updateCartQuantity = async (
 
 /**
  * Get quantity of a specific product in cart
- * @param {number} productId - ID of product
+ * @param {number} id - ID of product
  * @returns {number} Quantity of product in cart (0 if not found)
  */
-export const getProductQuantity = (productId) => {
+export const getProductQuantity = (id: number) => {
   const cartItems = getCartItems();
-  const item = cartItems.find((item) => item.id === productId);
+  const item = cartItems.find((item: CartItem) => item.id === id);
   return item ? item.quantity : 0;
 };
 
@@ -271,7 +274,7 @@ export const getProductQuantity = (productId) => {
  */
 export const getCartTotal = () => {
   const cartItems = getCartItems();
-  return cartItems.reduce((total, item) => {
+  return cartItems.reduce((total: number, item: CartItem) => {
     return total + item.price * item.quantity;
   }, 0);
 };
@@ -282,7 +285,10 @@ export const getCartTotal = () => {
  */
 export const getCartItemCount = () => {
   const cartItems = getCartItems();
-  return cartItems.reduce((total, item) => total + item.quantity, 0);
+  return cartItems.reduce(
+    (total: number, item: CartItem) => total + item.quantity,
+    0
+  );
 };
 
 /**

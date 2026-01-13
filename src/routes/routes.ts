@@ -17,6 +17,6 @@ export const ROUTES = {
  * @param {number|string} productId - Product ID
  * @returns {string} Product detail route
  */
-export const getProductRoute = (productId) => {
+export const getProductRoute = (productId: number): string => {
   return `/products/${productId}`;
 };

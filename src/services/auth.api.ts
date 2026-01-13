@@ -7,7 +7,7 @@ import { API_ENDPOINTS } from "../constants/apiEndpoints";
  * @param {string} password
  * @returns {Promise<Object>}
  */
-export const loginUser = async (username, password) => {
+export const loginUser = async (username: string, password: string) => {
   try {
     const response = await apiClient.post(API_ENDPOINTS.LOGIN.LOGIN, {
       username,
@@ -16,7 +16,7 @@ export const loginUser = async (username, password) => {
 
     // Axios response data is already parsed
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     // Axios error handling
     if (error.response) {
       // Server responded with non-2xx
@@ -37,7 +37,15 @@ export const loginUser = async (username, password) => {
 /**
  * Signup user (Dummy)
  */
-export const signupUser = async ({ username, email, password }) => {
+export const signupUser = async ({
+  username,
+  email,
+  password,
+}: {
+  username: string;
+  email: string;
+  password: string;
+}) => {
   try {
     const response = await apiClient.post(API_ENDPOINTS.SIGNUP.SIGNUP, {
       id: 0,
@@ -47,7 +55,7 @@ export const signupUser = async ({ username, email, password }) => {
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (error.response) {
       throw new Error("Signup failed");
     }

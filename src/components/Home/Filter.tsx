@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import "./Filter.scss";
+import type { Product } from "../../types/product";
 
-const Filter = ({ products, onFilterChange }) => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [maxPrice, setMaxPrice] = useState(1000);
-  const [sortBy, setSortBy] = useState("default");
+type FilterProps = {
+  products: Product[];
+  onFilterChange: (filteredProducts: Product[]) => void;
+};
+
+const Filter = ({ products, onFilterChange }: FilterProps) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [sortBy, setSortBy] = useState<string>("default");
 
   // Get unique categories and max price from products
   useEffect(() => {
@@ -19,27 +25,27 @@ const Filter = ({ products, onFilterChange }) => {
 
   const categories = ["all", ...new Set(products.map((p) => p.category))];
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     applyFilters(category, priceRange, sortBy);
   };
 
-  const handlePriceChange = (e) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     const newRange = [0, value];
     setPriceRange(newRange);
     applyFilters(selectedCategory, newRange, sortBy);
   };
 
-  const handleSortChange = (e) => {
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSort = e.target.value;
     setSortBy(newSort);
     applyFilters(selectedCategory, priceRange, newSort);
   };
 
-  const applyFilters = (category, range, sort) => {
+  const applyFilters = (category: string, range: number[], sort: string) => {
     // First, filter by category and price
-    let filtered = products.filter((product) => {
+    let filtered = products.filter((product: Product): boolean => {
       const categoryMatch = category === "all" || product.category === category;
       const priceMatch = product.price >= range[0] && product.price <= range[1];
       return categoryMatch && priceMatch;
@@ -68,7 +74,7 @@ const Filter = ({ products, onFilterChange }) => {
   };
 
   // Calculate percentage for slider gradient
-  const sliderPercentage = ((priceRange[1] - 0) / (maxPrice - 0)) * 100;
+  const sliderPercentage: number = ((priceRange[1] - 0) / (maxPrice - 0)) * 100;
 
   return (
     <div className="filter-container">

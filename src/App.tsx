@@ -37,7 +37,7 @@ function App() {
         <Route
           path={ROUTES.PROFILE}
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={ROLES.USER}>
               <Profile />
             </ProtectedRoute>
           }
@@ -53,15 +53,15 @@ function App() {
         <Route
           path={ROUTES.PRODUCT_FORM}
           element={
-            <ProtectedRoute allowedRole={ROLES.ADMIN}>
+            <ProtectedRoute allowedRoles={ROLES.ADMIN}>
               <ProductForm />
-            </ProtectedRoute>
+            </ProtectedRoute>   
           }
         />
         <Route
           path={ROUTES.USERS}
           element={
-            <ProtectedRoute allowedRole={ROLES.ADMIN}>
+            <ProtectedRoute allowedRoles={ROLES.ADMIN}>
               <Users />
             </ProtectedRoute>
           }

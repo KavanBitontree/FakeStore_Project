@@ -1,4 +1,4 @@
-export default function Logo() {
+export default function Logo(): React.ReactElement {
   return (
     <div className="logo-content">
       {/* Logo SVG */}

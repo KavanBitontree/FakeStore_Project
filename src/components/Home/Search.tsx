@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import "./Search.scss";
 import SearchIcon from "./SearchIcon";
+import type { SearchProps } from "../../types/search";
 
-const Search = ({ onSearch, placeholder = "Search products..." }) => {
-  const [value, setValue] = useState("");
+const Search = ({
+  onSearch,
+  placeholder = "Search products...",
+}: SearchProps) => {
+  const [value, setValue] = useState<string>("");
 
   // 🔁 Debounce logic
   useEffect(() => {

@@ -17,7 +17,9 @@ import Logo from "./Logo";
 import Search from "../../Home/Search";
 import "./Navbar.scss";
 
-export default function Navbar({ onSearch }) {
+import type { onSearch } from "../../../types/search";
+
+export default function Navbar({ onSearch }: { onSearch: onSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);

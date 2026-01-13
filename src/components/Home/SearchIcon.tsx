@@ -1,4 +1,6 @@
-const SearchIcon = ({ size = 24, className = "" }) => (
+import type { SearchIconProps } from "../../types/search";
+
+const SearchIcon = ({ size = 24, className = "" }: SearchIconProps) => (
   <svg
     width={size}
     height={size}

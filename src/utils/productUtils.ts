@@ -1,3 +1,5 @@
+import type { Product } from "../types/product";
+
 // LocalStorage keys
 const PRODUCTS_STORAGE_KEY = "fakeStore_products";
 const PRODUCTS_INITIALIZED_KEY = "fakeStore_productsInitialized";
@@ -25,7 +27,7 @@ export const getStoredProducts = () => {
 };
 
 // Save products
-export const saveProducts = (products) => {
+export const saveProducts = (products: Product[]) => {
   try {
     localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
     window.dispatchEvent(new CustomEvent("productsUpdated"));
@@ -35,7 +37,7 @@ export const saveProducts = (products) => {
 };
 
 // Initialize products from API
-export const initializeProducts = (apiProducts) => {
+export const initializeProducts = (apiProducts: Product[]) => {
   if (!areProductsInitialized()) {
     saveProducts(apiProducts);
     markProductsInitialized();
@@ -45,10 +47,10 @@ export const initializeProducts = (apiProducts) => {
 };
 
 // Add product to localStorage
-export const addProductToStore = (product) => {
+export const addProductToStore = (product: Product) => {
   const products = getStoredProducts();
   const maxId =
-    products.length > 0 ? Math.max(...products.map((p) => p.id)) : 0;
+    products.length > 0 ? Math.max(...products.map((p: Product) => p.id)) : 0;
   const newProduct = { ...product, id: maxId + 1 };
   products.push(newProduct);
   saveProducts(products);
@@ -56,9 +58,9 @@ export const addProductToStore = (product) => {
 };
 
 // Update product in localStorage
-export const updateProductInStore = (id, updates) => {
+export const updateProductInStore = (id: number, updates: Product) => {
   const products = getStoredProducts();
-  const idx = products.findIndex((p) => p.id === id);
+  const idx = products.findIndex((p: Product) => p.id === id);
   if (idx === -1) return null;
   products[idx] = { ...products[idx], ...updates };
   saveProducts(products);
@@ -66,18 +68,18 @@ export const updateProductInStore = (id, updates) => {
 };
 
 // Delete product from localStorage
-export const deleteProductFromStore = (id) => {
+export const deleteProductFromStore = (id: number) => {
   const products = getStoredProducts();
-  const filtered = products.filter((p) => p.id !== id);
+  const filtered = products.filter((p: Product) => p.id !== id);
   if (filtered.length === products.length) return false;
   saveProducts(filtered);
   return true;
 };
 
 // Get single product
-export const getProductByIdStore = (id) => {
+export const getProductByIdStore = (id: number) => {
   const products = getStoredProducts();
-  return products.find((p) => p.id === id) || null;
+  return products.find((p: Product) => p.id === id) || null;
 };
 
 // Clear all products (for testing)
@@ -94,7 +96,7 @@ export const normalizeCategory = (category = "") =>
 export const getStoredCategories = () => {
   const products = getStoredProducts();
   const map = new Map();
-  products.forEach((p) => {
+  products.forEach((p: Product) => {
     if (!p.category) return;
     const normalized = normalizeCategory(p.category);
     if (!map.has(normalized)) map.set(normalized, p.category);
@@ -106,7 +108,7 @@ export const getStoredCategories = () => {
 export const cleanUnusedCategories = () => {
   const products = getStoredProducts();
   const categoriesInUse = new Set(
-    products.map((p) => normalizeCategory(p.category))
+    products.map((p: Product) => normalizeCategory(p.category))
   );
   const allCategories = getStoredCategories();
   const filtered = allCategories.filter((cat) =>
