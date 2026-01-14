@@ -29,6 +29,56 @@
   }
 }
 
+.remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+
+  @include m.button-base;
+  width: 36px;
+  height: 36px;
+  background-color: v.$dark-bg;
+  @include m.border-solid;
+  border-color: v.$orange;
+  @include m.flex-center;
+  border-radius: 50%;
+  transition: all v.$transition-base v.$transition-ease;
+
+  &:hover {
+    background-color: v.$orange;
+    box-shadow: v.$shadow-glow;
+    transform: scale(1.1);
+
+    .trash-icon {
+      color: v.$dark-bg;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @include m.mobile {
+    width: 32px;
+    height: 32px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+.trash-icon {
+  width: 18px;
+  height: 18px;
+  color: v.$orange;
+  transition: color v.$transition-base v.$transition-ease;
+
+  @include m.mobile {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 .cart-card-image-container {
   width: 120px;
   height: 120px;
@@ -68,9 +118,11 @@
   gap: v.$spacing-xs;
   flex: 1;
   min-width: 0;
+  padding-right: 40px; // Add space for the remove button
 
   @include m.mobile {
     gap: 4px;
+    padding-right: 36px;
   }
 }
 
@@ -210,48 +262,6 @@
   @include m.mobile {
     min-width: 24px;
     font-size: v.$font-size-sm;
-  }
-}
-
-.remove-btn {
-  @include m.button-base;
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  @include m.border-solid;
-  border-color: v.$orange;
-  @include m.flex-center;
-  border-radius: v.$radius-sm;
-  transition: all v.$transition-base v.$transition-ease;
-
-  &:hover {
-    background-color: v.$orange;
-    box-shadow: v.$shadow-glow;
-
-    .trash-icon {
-      color: v.$dark-bg;
-    }
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  @include m.mobile {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-.trash-icon {
-  width: 20px;
-  height: 20px;
-  color: v.$orange;
-  transition: color v.$transition-base v.$transition-ease;
-
-  @include m.mobile {
-    width: 18px;
-    height: 18px;
   }
 }
 

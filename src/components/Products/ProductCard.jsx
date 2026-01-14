@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Pencil, Trash2 } from "lucide-react"; // ✅ Trash icon
+import { useNavigate } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
 
 import { getProductQuantity, addToCart } from "../../utils/cartUtils";
 import {
@@ -22,12 +23,15 @@ const ProductCard = ({
   disableNavigation,
   onEdit,
 }) => {
+  const navigate = useNavigate();
   const imgRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
   const { role } = useAuth();
   const isAdmin = role === ROLES.ADMIN;
+  const canAddToCart = !isAdmin;
+
   const MAX_STOCK = 10;
 
   /* ---------- Load cart quantity ---------- */
@@ -75,7 +79,7 @@ const ProductCard = ({
   /* ---------- Image click ---------- */
   const onImageClick = () => {
     if (!disableNavigation && !isAdmin && product?.id) {
-      handleImageNav(null, product.id); // you can pass navigate if needed
+      handleImageNav(navigate, product.id); // you can pass navigate if needed
     }
   };
 
@@ -177,27 +181,30 @@ const ProductCard = ({
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
 
-          {quantity === 0 ? (
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              Add
-            </button>
-          ) : (
-            <div className="quantity-controls">
-              <button
-                className="quantity-btn quantity-btn--decrement"
-                onClick={() => handleDecrement(product, quantity, setQuantity)}
-              >
-                -
+          {canAddToCart &&
+            (quantity === 0 ? (
+              <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                Add
               </button>
-              <span className="quantity-display">{quantity}</span>
-              <button
-                className="quantity-btn quantity-btn--increment"
-                onClick={handleIncrementWithStock}
-              >
-                +
-              </button>
-            </div>
-          )}
+            ) : (
+              <div className="quantity-controls">
+                <button
+                  className="quantity-btn quantity-btn--decrement"
+                  onClick={() =>
+                    handleDecrement(product, quantity, setQuantity)
+                  }
+                >
+                  -
+                </button>
+                <span className="quantity-display">{quantity}</span>
+                <button
+                  className="quantity-btn quantity-btn--increment"
+                  onClick={handleIncrementWithStock}
+                >
+                  +
+                </button>
+              </div>
+            ))}
         </div>
       </div>
     </div>

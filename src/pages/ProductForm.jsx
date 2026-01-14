@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { createProduct, updateProduct } from "../services/products.api";
 import {
   addProductToStore,
-  updateProductInStore, // ✅ new
+  updateProductInStore,
   getStoredCategories,
   normalizeCategory,
 } from "../utils/productUtils";
@@ -15,12 +15,17 @@ import { ROUTES } from "../routes/routes";
 
 import "./Login.scss";
 
-const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
+const ProductForm = () => {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
   const [isNewCategory, setIsNewCategory] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get mode and initialValues from navigation state
+  const mode = location.state?.mode || "Add";
+  const initialValues = location.state?.product || null;
 
   // Load categories
   useEffect(() => {
@@ -46,6 +51,10 @@ const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
     newCategory: "",
     image: "",
     ...initialValues,
+  };
+
+  const handleCancel = () => {
+    navigate(ROUTES.ADMIN);
   };
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -97,18 +106,20 @@ const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
 
       if (mode === "Add") {
         await createProduct(productData).catch(() => {});
-        addProductToStore(productData); // updates localStorage
+        addProductToStore(productData);
+        alert("Product added successfully!");
       } else if (mode === "Edit") {
         await updateProduct(productData.id, productData).catch(() => {});
-        updateProductInStore(productData.id, productData); // ✅ update in localStorage
+        updateProductInStore(productData.id, productData);
+        alert("Product updated successfully!");
       }
 
       resetForm();
-      if (onDone) onDone(); // close modal / trigger parent refresh
-      else navigate(ROUTES.ADMIN);
+      navigate(ROUTES.ADMIN);
     } catch (err) {
       console.error(err);
       setError(`${mode} failed`);
+      alert(`Failed to ${mode.toLowerCase()} product. Please try again.`);
     } finally {
       setSubmitting(false);
     }
@@ -119,6 +130,16 @@ const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
       <main className="login-main">
         <div className="login-container">
           <div className="auth-card">
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={handleCancel}
+                className="form-close-button"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+
             <h1 className="auth-title">{mode} Product</h1>
             <p className="auth-subtitle">
               {mode === "Add"
@@ -136,7 +157,7 @@ const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
               enableReinitialize
               onSubmit={handleSubmit}
             >
-              {({ isSubmitting, setFieldValue, isValid }) => (
+              {({ isSubmitting, setFieldValue, isValid, resetForm }) => (
                 <Form className="auth-form">
                   {/* TITLE */}
                   <div className="form-group">
@@ -247,14 +268,30 @@ const ProductForm = ({ mode = "Add", initialValues, onDone }) => {
                     />
                   </div>
 
-                  {/* SUBMIT */}
-                  <button
-                    type="submit"
-                    className="auth-button"
-                    disabled={isSubmitting || !isValid}
-                  >
-                    {isSubmitting ? `${mode}ing...` : `${mode} Product`}
-                  </button>
+                  {/* SUBMIT & RESET BUTTONS */}
+                  <div style={{ display: "flex", gap: "12px" }}>
+                    <button
+                      type="submit"
+                      className="auth-button"
+                      disabled={isSubmitting || !isValid}
+                      style={{ flex: 1 }}
+                    >
+                      {isSubmitting ? `${mode}ing...` : `${mode} Product`}
+                    </button>
+                    <button
+                      type="button"
+                      className="auth-button reset-button"
+                      onClick={() => {
+                        if (mode === "Add") {
+                          resetForm();
+                        } else {
+                          resetForm({ values: defaultValues });
+                        }
+                      }}
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </Form>
               )}
             </Formik>

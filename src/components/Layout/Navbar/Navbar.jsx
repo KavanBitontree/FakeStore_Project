@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart, User, Users, Package } from "lucide-react";
 
 import {
   getCartItemCount,
@@ -11,6 +11,7 @@ import {
 
 import { useAuth } from "../../../context/AuthContext";
 import { ROUTES } from "../../../routes/routes";
+import { ROLES } from "../../../constants/roles";
 
 import Logo from "./Logo";
 import Search from "../../Home/Search";
@@ -22,8 +23,13 @@ export default function Navbar({ onSearch }) {
   const [cartTotal, setCartTotal] = useState(0);
 
   const navigate = useNavigate();
-  const location = useLocation(); // 🔹 detect current path
-  const { isAuthenticated, logout, userId } = useAuth();
+  const location = useLocation();
+
+  const { isAuthenticated, logout, userId, role } = useAuth();
+  const isAdmin = role === ROLES.ADMIN;
+
+  const isUsersPage = location.pathname === ROUTES.USERS;
+  const isProfilePage = location.pathname === ROUTES.PROFILE;
 
   /* ---------- Scroll ---------- */
   const handleScroll = useCallback(() => {
@@ -42,20 +48,31 @@ export default function Navbar({ onSearch }) {
   }, []);
 
   useEffect(() => {
-    updateCartInfo();
-    window.addEventListener("cartUpdated", updateCartInfo);
-    return () => window.removeEventListener("cartUpdated", updateCartInfo);
-  }, [updateCartInfo]);
+    if (!isAdmin) {
+      updateCartInfo();
+      window.addEventListener("cartUpdated", updateCartInfo);
+      return () => window.removeEventListener("cartUpdated", updateCartInfo);
+    }
+  }, [updateCartInfo, isAdmin]);
 
-  /* ---------- Actions ---------- */
-  const handleLogin = () => navigate(ROUTES.LOGIN);
+  /* ---------- Navigation ---------- */
+  const handleLogoClick = () => {
+    navigate(isAdmin ? ROUTES.ADMIN : ROUTES.HOME);
+  };
+
+  const handleLogin = () =>
+    navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
   const handleProfile = () => navigate(ROUTES.PROFILE);
+  const handleUsers = () => navigate(ROUTES.USERS);
+  const handleProducts = () => navigate(ROUTES.ADMIN);
+  const handleUserProducts = () => navigate(ROUTES.HOME);
+
   const handleLogout = () => {
     logout();
     navigate(ROUTES.LOGIN);
   };
+
   const handleCart = async () => {
-    // 🔹 dummy update call on cart visit
     if (isAuthenticated && userId) {
       try {
         const items = getCartItems();
@@ -64,23 +81,33 @@ export default function Navbar({ onSearch }) {
         console.error("Dummy cart update failed:", err);
       }
     }
-
     navigate(ROUTES.CART);
   };
 
+  /* ---------- UI Flags ---------- */
   const isCartEmpty = cartCount === 0;
 
-  const showProfileIcon = location.pathname !== ROUTES.PROFILE; // 🔹 hide on profile page
+  const hideSearchBar =
+    location.pathname === ROUTES.USERS ||
+    location.pathname === ROUTES.CART ||
+    location.pathname === ROUTES.PROFILE ||
+    location.pathname.startsWith(ROUTES.PRODUCT_DETAIL.replace(":id", ""));
+
+  const showSearchBar = !hideSearchBar;
 
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
-      <div className="logo">
+      {/* LOGO */}
+      <div className="logo" onClick={handleLogoClick} role="button">
         <Logo />
       </div>
 
-      <div className="navbar-search">
-        <Search onSearch={onSearch} />
-      </div>
+      {/* SEARCH */}
+      {showSearchBar && (
+        <div className="navbar-search">
+          <Search onSearch={onSearch} />
+        </div>
+      )}
 
       <div className="nav-actions">
         {!isAuthenticated ? (
@@ -92,7 +119,43 @@ export default function Navbar({ onSearch }) {
           </button>
         ) : (
           <>
-            {showProfileIcon && (
+            {/* ADMIN ACTIONS */}
+            {isAdmin && (
+              <>
+                {isUsersPage ? (
+                  <button
+                    className="nav-button nav-button--icon"
+                    onClick={handleProducts}
+                  >
+                    <Package size={18} />
+                    <span className="button-label">Products</span>
+                  </button>
+                ) : (
+                  <button
+                    className="nav-button nav-button--icon"
+                    onClick={handleUsers}
+                  >
+                    <Users size={18} />
+                    <span className="button-label">Users</span>
+                  </button>
+                )}
+              </>
+            )}
+
+            {/* USER: PROFILE PAGE → SHOW PRODUCTS ICON */}
+            {!isAdmin && isProfilePage && (
+              <button
+                className="nav-button nav-button--icon"
+                onClick={handleUserProducts}
+                aria-label="Products"
+              >
+                <Package size={18} />
+                <span className="button-label">Products</span>
+              </button>
+            )}
+
+            {/* USER PROFILE ICON (NOT ON PROFILE PAGE) */}
+            {!isAdmin && !isProfilePage && (
               <button
                 className="nav-button nav-button--icon"
                 onClick={handleProfile}
@@ -111,20 +174,24 @@ export default function Navbar({ onSearch }) {
           </>
         )}
 
-        <button
-          className="nav-button nav-button--cart"
-          disabled={isCartEmpty}
-          onClick={handleCart}
-        >
-          <ShoppingCart size={18} />
-          <span>MyCart</span>
+        {/* CART (HIDDEN FOR ADMIN) */}
+        {!isAdmin && (
+          <button
+            className="nav-button nav-button--cart"
+            disabled={isCartEmpty}
+            onClick={handleCart}
+            aria-label="Cart"
+          >
+            <ShoppingCart size={18} />
+            <span className="cart-text">MyCart</span>
 
-          {!isCartEmpty && (
-            <span className="cart-badge">
-              {cartCount} · ${cartTotal.toFixed(2)}
-            </span>
-          )}
-        </button>
+            {!isCartEmpty && (
+              <span className="cart-badge">
+                {cartCount} · ${cartTotal.toFixed(2)}
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </nav>
   );

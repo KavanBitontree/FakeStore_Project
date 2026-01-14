@@ -104,21 +104,61 @@
   }
 }
 
+.sort-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$gray;
+  background-color: v.$dark-bg;
+  color: v.$white;
+  font-family: v.$font-main;
+  font-size: v.$font-size-sm;
+  cursor: pointer;
+  @include m.transition();
+
+  &:focus {
+    border-color: v.$orange;
+    outline: none;
+  }
+
+  &:hover {
+    border-color: v.$orange;
+  }
+
+  option {
+    background-color: v.$dark-bg;
+    color: v.$white;
+    padding: 8px;
+  }
+
+  @include m.mobile {
+    padding: 8px 10px;
+    font-size: v.$font-size-xs;
+  }
+}
+
 .price-slider {
   width: 100%;
   height: 6px;
   border-radius: v.$radius-full;
-  background: linear-gradient(
-    to right,
-    v.$orange 0%,
-    v.$orange var(--value),
-    v.$white var(--value),
-    v.$white 100%
-  );
   outline: none;
   appearance: none;
   cursor: pointer;
+  transition: background 0.15s ease;
 
+  // Remove default backgrounds
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: v.$radius-full;
+  }
+
+  &::-moz-range-track {
+    height: 6px;
+    border-radius: v.$radius-full;
+    background: transparent;
+  }
+
+  // Thumb styles
   &::-webkit-slider-thumb {
     appearance: none;
     width: 18px;
@@ -128,6 +168,13 @@
     cursor: pointer;
     border: 2px solid v.$white;
     box-shadow: v.$shadow-sm;
+    margin-top: -6px; // Center the thumb on the track
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+    }
   }
 
   &::-moz-range-thumb {
@@ -138,6 +185,21 @@
     cursor: pointer;
     border: 2px solid v.$white;
     box-shadow: v.$shadow-sm;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+    }
+  }
+
+  // Active/focus states
+  &:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+
+  &:active::-moz-range-thumb {
+    transform: scale(1.15);
   }
 }
 

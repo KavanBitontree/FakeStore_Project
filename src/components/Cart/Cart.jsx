@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Cart.scss";
 import CartCard from "./CartCard";
 import { getCartItems, getCartTotal, clearCart } from "../../utils/cartUtils";
@@ -44,7 +44,8 @@ const CartMain = () => {
 
   const handleCheckoutClick = () => {
     if (!isAuthenticated) {
-      navigate(ROUTES.LOGIN);
+      // Navigate to login with redirect back to cart
+      navigate(ROUTES.LOGIN, { state: { from: ROUTES.CART } });
     } else {
       // later you can route to /checkout
       console.log("Proceed to checkout");
@@ -84,9 +85,9 @@ const CartMain = () => {
           {cartItems.length === 0 ? (
             <div className="empty-cart">
               <p className="empty-cart-text">Your cart is empty</p>
-              <p className="empty-cart-subtext">
-                Add some products to get started!
-              </p>
+              <Link to={ROUTES.HOME} className="empty-cart-subtext">
+                Click here to add some products!
+              </Link>
             </div>
           ) : (
             <>
